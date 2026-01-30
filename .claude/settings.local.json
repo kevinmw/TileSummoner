@@ -81,7 +81,10 @@
       "mcp__godot-ultimate__godot_get_api_docs",
       "WebFetch(domain:docs.godotengine.org)",
       "Bash(claude plugin list:*)",
-      "mcp__godot-ultimate__godot_validate_code"
+      "mcp__godot-ultimate__godot_validate_code",
+      "Bash(tree:*)",
+      "mcp__godot-ultimate__godot_validate_project",
+      "mcp__godot-ultimate__godot_analyze_scene"
     ]
   },
   "enabledPlugins": {

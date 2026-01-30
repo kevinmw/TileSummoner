@@ -4,20 +4,22 @@
 
 ## 快速参考
 
-| 文档 | 用途 |
-|------|------|
-| `CLAUDE.md` | AI 开发上下文配置（主入口） |
-| `CODING_STANDARDS.md` | 完整 GDScript 编码标准 |
-| `PROJECT_RULES.md` | 本文档 - 规则汇总 |
+|文档 |用途 |
+|---|---|
+|`CLAUDE.md` |AI 开发上下文配置（主入口） |
+|`CODING_STANDARDS.md` |完整 GDScript 编码标准 |
+|`PROJECT_RULES.md` |本文档 - 规则汇总 |
 
 ## 代码组织规则
 
 ### 文件大小
+
 - 推荐：200-400 行
 - 上限：800 行
 - 超过限制：拆分为多个文件
 
 ### 目录结构
+
 ```
 Scripts/
 ├── <功能模块>/        # 按功能组织，不按类型
@@ -26,26 +28,28 @@ Scripts/
 ```
 
 ### 一文件一类
+
 - 每个 `.gd` 文件只有一个 `extends` 语句
 - 每个 `.gd` 文件只有一个 `class_name` 声明
 - 文件名与类名保持一致
 
 ## 命名规范
 
-| 类型 | 格式 | 示例 |
-|------|------|------|
-| 类名 | `PascalCase` | `class_name TileManager` |
-| 函数 | `snake_case` | `func get_tile_data()` |
-| 变量 | `snake_case` | `var grid_position` |
-| 常量 | `UPPER_SNAKE_CASE` | `const MAX_UNITS = 8` |
-| 私有成员 | 前缀 `_` | `var _cached_data` |
-| 信号 | `snake_case` | `signal tile_changed` |
-| 资源 | `PascalCase` + 后缀 | `TileData.tres` |
-| 场景 | `snake_case` | `tile.tscn` |
+|类型 |格式 |示例 |
+|---|---|---|
+|类名 |`PascalCase` |`class_name TileManager` |
+|函数 |`snake_case` |`func get_tile_data()` |
+|变量 |`snake_case` |`var grid_position` |
+|常量 |`UPPER_SNAKE_CASE` |`const MAX_UNITS = 8` |
+|私有成员 |前缀 `_` |`var _cached_data` |
+|信号 |`snake_case` |`signal tile_changed` |
+|资源 |`PascalCase` + 后缀 |`TileData.tres` |
+|场景 |`snake_case` |`tile.tscn` |
 
 ## 类型注解规则
 
 ### 必须注解的情况
+
 - 所有函数参数
 - 所有函数返回值
 - 所有类成员变量（使用 `@export` 时）
@@ -61,6 +65,7 @@ func get_tile(cell):
 ```
 
 ### 可选类型
+
 ```gdscript
 var optional_data: TileData = null
 func get_or_null() -> Variant:
@@ -70,6 +75,7 @@ func get_or_null() -> Variant:
 ## Godot 特定规则
 
 ### StringName 使用
+
 用于频繁比较的字符串 ID：
 
 ```gdscript
@@ -85,6 +91,7 @@ if tile_type == "forest":
 ```
 
 ### AutoLoad 单例
+
 - 继承 `Node`，无需 `class_name`
 - 全局访问，无需 `static`
 - 用于全局状态和工具类
@@ -101,6 +108,7 @@ TileDatabase.register_tile(data)
 ```
 
 ### 资源路径
+
 始终使用 `res://` 绝对路径：
 
 ```gdscript
@@ -109,6 +117,7 @@ var texture = preload("res://assets/sprite.png")
 ```
 
 ### 内存管理
+
 ```gdscript
 # ✅ 安全的延迟释放
 node.queue_free()
@@ -118,6 +127,7 @@ node.free()
 ```
 
 ### 信号连接
+
 ```gdscript
 # 连接前检查
 if not signal.is_connected(_on_event):
@@ -131,6 +141,7 @@ if signal.is_connected(_on_event):
 ## 注释标准
 
 ### 文件头注释
+
 ```gdscript
 ## 地块管理器 - 处理地块创建和连通性检测
 ##
@@ -143,6 +154,7 @@ class_name TileManager
 ```
 
 ### 函数注释
+
 ```gdscript
 ## 设置指定位置的地块类型
 ##
@@ -154,6 +166,7 @@ func set_tile(cell: Vector2i, tile_type: StringName) -> bool:
 ```
 
 ### 内联注释
+
 ```gdscript
 # 复杂逻辑需要解释
 for neighbor in _get_neighbors(cell):
@@ -165,6 +178,7 @@ for neighbor in _get_neighbors(cell):
 ## 数据驱动原则
 
 ### 使用资源文件
+
 ```gdscript
 # ❌ 硬编码
 var health = 100
@@ -179,6 +193,7 @@ var movement_range = data.movement_range
 ```
 
 ### 资源文件位置
+
 ```
 Resources/
 ├── Tiles/          # 地块数据
@@ -192,17 +207,18 @@ Resources/
 
 ## 性能优化指南
 
-| 场景 | 优化方案 |
-|------|----------|
-| 字符串 ID | 使用 `StringName` 而非 `String` |
-| 频繁创建对象 | 使用对象池 |
-| 数据容器 | 使用 `RefCounted` 而非 `Node` |
-| 批量操作 | 合并同一帧的操作 |
-| 大资源加载 | 使用 `load()` 而非 `preload()` |
+|场景 |优化方案 |
+|---|---|
+|字符串 ID |使用 `StringName` 而非 `String` |
+|频繁创建对象 |使用对象池 |
+|数据容器 |使用 `RefCounted` 而非 `Node` |
+|批量操作 |合并同一帧的操作 |
+|大资源加载 |使用 `load()` 而非 `preload()` |
 
 ## 工厂模式
 
 ### 标准工厂
+
 ```gdscript
 extends Node
 class_name UnitFactory
@@ -223,6 +239,7 @@ static func create(data: UnitData, pos: Vector2i) -> Unit:
 ## 消息系统
 
 ### 发送消息
+
 ```gdscript
 var msg = TileChangedMessage.new()
 msg.cell = Vector2i(3, 4)
@@ -231,6 +248,7 @@ MessageServer.send_message(msg)
 ```
 
 ### 接收消息
+
 ```gdscript
 func _ready() -> void:
     MessageServer.message_sent.connect(_on_message)
@@ -241,6 +259,7 @@ func _on_message(msg: Message) -> void:
 ```
 
 ### 可用消息类型
+
 位置：`Scripts/message/messages/`
 
 - `TileChangedMessage` - 地块变化
@@ -253,6 +272,7 @@ func _on_message(msg: Message) -> void:
 ## 错误处理
 
 ### 参数验证
+
 ```gdscript
 func spawn_unit(data: UnitData, pos: Vector2i) -> Unit:
     # 参数验证
@@ -275,6 +295,7 @@ func spawn_unit(data: UnitData, pos: Vector2i) -> Unit:
 ```
 
 ### 调试输出
+
 ```gdscript
 # 普通信息
 print("[Manager] Creating tile at: %s" % pos)
@@ -289,6 +310,7 @@ push_error("Failed to load texture: %s" % path)
 ## Git 提交规范
 
 ### 提交格式
+
 ```
 <类型>: <简短描述>
 
@@ -298,18 +320,20 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 ### 类型说明
-| 类型 | 用途 | 示例 |
-|------|------|------|
-| `feat` | 新功能 | `feat: add forest terrain` |
-| `fix` | Bug 修复 | `fix: connectivity check` |
-| `refactor` | 重构 | `refactor: simplify manager` |
-| `docs` | 文档 | `docs: update standards` |
-| `style` | 格式 | `style: format code` |
-| `perf` | 性能 | `perf: optimize rendering` |
-| `test` | 测试 | `test: add unit tests` |
-| `chore` | 构建/工具 | `chore: update deps` |
+
+|类型 |用途 |示例 |
+|---|---|---|
+|`feat` |新功能 |`feat: add forest terrain` |
+|`fix` |Bug 修复 |`fix: connectivity check` |
+|`refactor` |重构 |`refactor: simplify manager` |
+|`docs` |文档 |`docs: update standards` |
+|`style` |格式 |`style: format code` |
+|`perf` |性能 |`perf: optimize rendering` |
+|`test` |测试 |`test: add unit tests` |
+|`chore` |构建/工具 |`chore: update deps` |
 
 ### 示例
+
 ```
 feat: add terrain type selection UI
 
@@ -324,24 +348,29 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ## 测试规则
 
 ### TDD 流程
+
+
 1. 使用 `/tdd` 技能启动测试驱动开发
 2. 先写测试用例
 3. 实现功能使测试通过
 4. 重构优化
 
 ### 测试文件位置
+
 ```
 Scripts/test/
 ├── test_<模块名>.gd
 ```
 
 ### 测试场景位置
+
 ```
 Scenes/test/
 ├── test_<功能名>.tscn
 ```
 
 ### GdUnit4 使用
+
 ```bash
 # 运行所有测试
 .\addons\gdunit4\run_cmd.bat
@@ -353,6 +382,7 @@ Scenes/test/
 ## 常见模式
 
 ### 单例模式
+
 ```gdscript
 # AutoLoad 配置
 extends Node
@@ -364,6 +394,7 @@ func get_instance() -> TileDatabase:
 ```
 
 ### 观察者模式
+
 ```gdscript
 # 使用信号实现
 signal tile_changed(cell: Vector2i, new_type: StringName)
@@ -373,6 +404,7 @@ func _notify_tile_changed(cell: Vector2i, new_type: StringName) -> void:
 ```
 
 ### 状态机
+
 ```gdscript
 enum State {
     IDLE,
@@ -391,6 +423,7 @@ func change_state(new_state: State) -> void:
 
 ## 禁止事项
 
+
 1. **禁止使用表情符号**：代码、注释、文档中不使用 emoji
 2. **禁止硬编码数据**：游戏数据应存储在 .tres 资源文件
 3. **禁止直接调用 free()**：使用 queue_free() 代替
@@ -399,3 +432,5 @@ func change_state(new_state: State) -> void:
 6. **禁止跨模块直接依赖**：使用消息系统解耦
 7. **禁止超大文件**：单文件不超过 800 行
 8. **禁止缺少类型注解**：所有函数必须有类型注解
+
+

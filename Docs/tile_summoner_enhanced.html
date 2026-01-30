@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Tile Summoner - Enhanced Battle</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#dfb22a", "primary-dim": "#8c6e12",
+                        "background-light": "#f8f7f6", "background-dark": "#12110c",
+                        "stone-dark": "#1A1E26", "stone-light": "#2a303b",
+                        mana: "#2accdf", fire: "#D63D3D", water: "#3D97D6", earth: "#3DD66B", "void": "#6b4c9a",
+                        enemy: "#cf3636", "enemy-dark": "#7f1d1d", "enemy-glow": "#ef4444",
+                        elite: "#9333ea", "elite-glow": "#a855f7",
+                        ally: "#2a8adf", ice: "#a5f3fc", swamp: "#4d7c0f", desert: "#d97706", rock: "#78716c", farm: "#b45309", lava: "#ef4444"
+                    },
+                    fontFamily: {
+                        display: "Space Grotesk", serif: "Cinzel", sans: ["Noto Sans", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "glow-gold": "0 0 15px -3px rgba(223, 178, 42, 0.5)",
+                        "glow-mana": "0 0 20px -5px rgba(42, 204, 223, 0.6)",
+                        "inner-stone": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.6)",
+                        "3d-tower": "0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.1)",
+                        "unit-glow-red": "0 0 15px rgba(239, 68, 68, 0.6)",
+                        "unit-glow-purple": "0 0 20px rgba(147, 51, 234, 0.6)",
+                        "void-glow": "0 0 30px rgba(107, 76, 154, 0.8), inset 0 0 30px rgba(107, 76, 154, 0.4)"
+                    },
+                    animation: {
+                        "pulse-fast": "pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                        float: "float 3s ease-in-out infinite",
+                        "void-pulse": "voidPulse 2s ease-in-out infinite",
+                        "energy-flow": "energyFlow 3s linear infinite",
+                        "shimmer": "shimmer 2s linear infinite"
+                    },
+                    keyframes: {
+                        float: {
+                            "0%, 100%": {transform: "translateY(0)"},
+                            "50%": {transform: "translateY(-5px)"}
+                        },
+                        voidPulse: {
+                            "0%, 100%": {boxShadow: "0 0 20px rgba(107, 76, 154, 0.6), inset 0 0 20px rgba(107, 76, 154, 0.3)"},
+                            "50%": {boxShadow: "0 0 40px rgba(107, 76, 154, 1), inset 0 0 30px rgba(107, 76, 154, 0.5)"}
+                        },
+                        energyFlow: {
+                            "0%": {backgroundPosition: "0% 50%"},
+                            "100%": {backgroundPosition: "200% 50%"}
+                        },
+                        shimmer: {
+                            "0%": {backgroundPosition: "-200% 0"},
+                            "100%": {backgroundPosition: "200% 0"}
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+        .custom-scroll::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #463e25, #6b4c9a); border-radius: 3px; }
+        
+        /* Tile Effects */
+        .tile-inset { box-shadow: inset 0 0 15px rgba(0,0,0,0.8), inset 1px 1px 2px rgba(255,255,255,0.05); }
+        .grid-bg { background-image: radial-gradient(circle at center, #2a303b 1px, transparent 1px); background-size: 20px 20px; }
+        
+        /* Card Hover Effects */
+        .card-hover { transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .card-hover:hover { transform: translateY(-40px) scale(1.1); box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 15px rgba(223,178,42,0.2); z-index: 60; }
+        
+        /* Cursors */
+        .cursor-grab { cursor: grab; }
+        .cursor-grab:active { cursor: grabbing; }
+        
+        /* Unit Shadows */
+        .shape-shadow-purple { filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.8)); }
+        .shape-shadow-red { filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.8)); }
+        
+        /* Panel Gradient */
+        .panel-gradient { background: linear-gradient(180deg, rgba(26,30,38,0.85) 0%, rgba(26,30,38,0.5) 100%); }
+        
+        /* Animated Background */
+        .cosmic-bg {
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(107, 76, 154, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(42, 204, 223, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(223, 178, 42, 0.05) 0%, transparent 70%),
+                linear-gradient(180deg, #0a0a0f 0%, #12110c 50%, #0d0d12 100%);
+        }
+        
+        /* Starfield Animation */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Void State Styles */
+        .void-state {
+            background: linear-gradient(135deg, rgba(107, 76, 154, 0.4) 0%, rgba(60, 40, 90, 0.6) 50%, rgba(107, 76, 154, 0.4) 100%);
+            border: 2px solid rgba(147, 112, 219, 0.6);
+            animation: voidPulse 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        .void-state::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(147, 112, 219, 0.3) 0%, transparent 30%),
+                radial-gradient(circle at 70% 70%, rgba(107, 76, 154, 0.3) 0%, transparent 30%);
+            animation: voidRotate 8s linear infinite;
+        }
+        .void-state::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(107, 76, 154, 0.1) 10px,
+                rgba(107, 76, 154, 0.1) 20px
+            );
+            animation: voidShift 4s linear infinite;
+        }
+        @keyframes voidRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes voidShift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
+        
+        /* Void Crack Effect */
+        .void-crack {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .void-crack svg {
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+        }
+        
+        /* Energy Rune Ring */
+        .rune-ring {
+            position: absolute;
+            inset: -10%;
+            border: 1px dashed rgba(147, 112, 219, 0.4);
+            border-radius: 50%;
+            animation: runeSpin 10s linear infinite;
+        }
+        @keyframes runeSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Layout Grid Lines */
+        .grid-lines {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.03;
+            background-image: 
+                linear-gradient(90deg, rgba(223, 178, 42, 0.5) 1px, transparent 1px),
+                linear-gradient(rgba(223, 178, 42, 0.5) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        /* Glass Panel Effect */
+        .glass-panel {
+            background: rgba(26, 30, 38, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        /* Shimmer Effect for Headers */
+        .shimmer-text {
+            background: linear-gradient(90deg, #dfb22a 0%, #fff 25%, #dfb22a 50%, #fff 75%, #dfb22a 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+    </style>
+</head>
+<body class="cosmic-bg text-white font-display overflow-hidden h-screen flex flex-col relative selection:bg-primary/30">
+    <!-- Animated Starfield Background -->
+    <div class="stars" id="starfield"></div>
+    
+    <!-- Grid Lines Overlay -->
+    <div class="grid-lines"></div>
+    
+    <!-- Top Energy Gradient -->
+    <div class="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-void/10 via-transparent to-transparent pointer-events-none z-0"></div>
+    
+    <!-- Bottom Fade -->
+    <div class="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-10"></div>
+    
+    <!-- TOP BAR: Aether & Timer -->
+    <header class="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-stretch gap-4">
+        <!-- Aether Meter -->
+        <div class="glass-panel rounded-xl shadow-2xl flex flex-col justify-center min-w-[260px] p-4 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-mana/5 to-transparent opacity-50"></div>
+            <div class="flex justify-between items-end mb-2 relative z-10">
+                <h3 class="text-mana text-[10px] font-bold tracking-[0.25em] flex items-center gap-1.5 opacity-90">
+                    <span class="material-symbols-outlined text-sm">bolt</span> AETHER
+                </h3>
+                <span class="text-lg font-display font-bold text-white leading-none">
+                    <span class="text-mana drop-shadow-[0_0_10px_rgba(42,204,223,0.8)]">7</span>
+                    <span class="text-stone-500 text-xs">/10</span>
+                </span>
+            </div>
+            <div class="h-3 w-full bg-stone-900/80 rounded-lg border border-stone-700/50 relative overflow-hidden shadow-inner-stone">
+                <!-- Segment Markers -->
+                <div class="absolute inset-0 flex justify-between px-1 z-20 pointer-events-none opacity-30">
+                    <div class="w-px h-full bg-stone-500"></div>
+                    <div class="w-px h-full bg-stone-500"></div>
+                    <div class="w-px h-full bg-stone-500"></div>
+                    <div class="w-px h-full bg-stone-500"></div>
+                    <div class="w-px h-full bg-stone-500"></div>
+                    <div class="w-px h-full bg-stone-500"></div>
+                    <div class="w-px h-full bg-stone-500"></div>
+                    <div class="w-px h-full bg-stone-500"></div>
+                    <div class="w-px h-full bg-stone-500"></div>
+                </div>
+                <!-- Fill Bar -->
+                <div class="h-full w-[70%] bg-gradient-to-r from-teal-800 via-mana to-teal-300 shadow-glow-mana relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.3)_50%,transparent_100%)] animate-shimmer"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Timer -->
+        <div class="glass-panel rounded-xl shadow-2xl flex items-center gap-4 px-5 py-3">
+            <div class="relative">
+                <span class="material-symbols-outlined text-primary animate-pulse-fast text-3xl">timer</span>
+                <div class="absolute inset-0 bg-primary/20 blur-xl rounded-full"></div>
+            </div>
+            <div class="flex flex-col items-start leading-none">
+                <span class="text-[9px] uppercase tracking-[0.2em] text-stone-500 font-sans font-bold mb-1">Battle Time</span>
+                <span class="text-xl font-mono text-white font-bold tracking-widest drop-shadow-md">02:15</span>
+            </div>
+        </div>
+        
+        <!-- Turn Indicator -->
+        <div class="glass-panel rounded-xl shadow-2xl flex items-center gap-3 px-4 py-3 border-l-2 border-ally/50">
+            <span class="material-symbols-outlined text-ally text-2xl">swords</span>
+            <div class="flex flex-col">
+                <span class="text-[9px] uppercase tracking-[0.2em] text-stone-500 font-bold">Turn</span>
+                <span class="text-lg font-bold text-ally">Your Move</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 relative w-full h-full flex items-center justify-center z-20 pt-24 pb-36 px-6">
+        
+        <!-- LEFT PANEL: Enemy Intel -->
+        <aside class="absolute left-4 top-1/2 -translate-y-1/2 w-60 flex flex-col gap-3 z-30">
+            <div class="glass-panel border-l-2 border-elite/40 p-4 rounded-r-xl relative overflow-hidden">
+                <!-- Decorative Corner -->
+                <div class="absolute top-0 right-0 w-8 h-8 border-t border-r border-elite/30 rounded-tr-lg"></div>
+                
+                <h3 class="text-[10px] text-stone-400 font-bold tracking-[0.2em] uppercase mb-4 flex items-center gap-2 border-b border-white/5 pb-2">
+                    <span class="material-symbols-outlined text-sm text-elite">radar</span> Enemy Intel
+                </h3>
+                
+                <div class="space-y-4">
+                    <!-- Elite Unit -->
+                    <div class="group relative">
+                        <div class="flex justify-between items-end mb-1.5 text-xs">
+                            <span class="text-elite font-bold tracking-wider flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">skull</span> Elite
+                            </span>
+                            <span class="text-stone-400 font-mono text-[10px]">90/100</span>
+                        </div>
+                        <div class="h-1.5 bg-stone-800 w-full rounded-full overflow-hidden border border-stone-700/50">
+                            <div class="h-full bg-gradient-to-r from-elite to-elite-glow w-[90%] shadow-[0_0_10px_rgba(147,51,234,0.5)] relative">
+                                <div class="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] animate-shimmer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ranged Units -->
+                    <div class="group relative">
+                        <div class="flex justify-between items-end mb-1.5 text-xs">
+                            <span class="text-red-400 font-bold tracking-wider flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">visibility</span> Ranged
+                            </span>
+                            <span class="text-stone-400 font-mono text-[10px]">105/120</span>
+                        </div>
+                        <div class="h-1.5 bg-stone-800 w-full rounded-full overflow-hidden border border-stone-700/50">
+                            <div class="h-full bg-gradient-to-r from-red-600 to-red-400 w-[85%] shadow-[0_0_8px_rgba(239,68,68,0.5)]"></div>
+                        </div>
+                        <div class="text-[9px] text-stone-500 mt-1 text-right">2 Units Active</div>
+                    </div>
+                    
+                    <!-- Infantry -->
+                    <div class="group relative">
+                        <div class="flex justify-between items-end mb-1.5 text-xs">
+                            <span class="text-orange-400 font-bold tracking-wider flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">swords</span> Infantry
+                            </span>
+                            <span class="text-stone-400 font-mono text-[10px]">175/240</span>
+                        </div>
+                        <div class="h-1.5 bg-stone-800 w-full rounded-full overflow-hidden border border-stone-700/50">
+                            <div class="h-full bg-gradient-to-r from-orange-600 to-orange-400 w-[72%] shadow-[0_0_8px_rgba(249,115,22,0.5)]"></div>
+                        </div>
+                        <div class="text-[9px] text-stone-500 mt-1 text-right">3 Units Active</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mini Stats -->
+            <div class="glass-panel p-3 rounded-xl flex justify-around">
+                <div class="text-center">
+                    <div class="text-[9px] text-stone-500 uppercase tracking-wider mb-1">Tiles</div>
+                    <div class="text-lg font-bold text-primary">12</div>
+                </div>
+                <div class="w-px bg-stone-700/50"></div>
+                <div class="text-center">
+                    <div class="text-[9px] text-stone-500 uppercase tracking-wider mb-1">Units</div>
+                    <div class="text-lg font-bold text-ally">3</div>
+                </div>
+                <div class="w-px bg-stone-700/50"></div>
+                <div class="text-center">
+                    <div class="text-[9px] text-stone-500 uppercase tracking-wider mb-1">Kills</div>
+                    <div class="text-lg font-bold text-enemy">5</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CENTER: Game Grid -->
+        <div class="relative bg-stone-900/60 p-3 rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.6)] border border-stone-600/30 transition-all duration-300 mx-auto z-20">
+            <!-- Glow Effect -->
+            <div class="absolute -inset-2 bg-gradient-to-b from-primary/10 via-transparent to-void/10 rounded-2xl blur-xl opacity-60 pointer-events-none"></div>
+            
+            <!-- Grid Container -->
+            <div class="grid grid-cols-7 grid-rows-9 gap-1.5 h-[70vh] aspect-[7/9] relative z-10" id="gameGrid">
+                <script>
+                    const terrainTypes = [
+                        { name: 'Grassland', icon: 'grass', bg: 'bg-emerald-950', border: 'border-emerald-900', text: 'text-emerald-600' },
+                        { name: 'Water', icon: 'water_drop', bg: 'bg-blue-950', border: 'border-blue-900', text: 'text-blue-600' },
+                        { name: 'Desert', icon: 'grain', bg: 'bg-amber-950', border: 'border-amber-900', text: 'text-amber-600' },
+                        { name: 'Rock', icon: 'landscape', bg: 'bg-stone-800', border: 'border-stone-700', text: 'text-stone-600' },
+                        { name: 'Forest', icon: 'forest', bg: 'bg-green-950', border: 'border-green-900', text: 'text-green-800' },
+                        { name: 'Farmland', icon: 'agriculture', bg: 'bg-orange-950', border: 'border-orange-900', text: 'text-orange-800' },
+                        { name: 'Lava', icon: 'volcano', bg: 'bg-red-950', border: 'border-red-900', text: 'text-red-700' },
+                        { name: 'Swamp', icon: 'blur_on', bg: 'bg-lime-950', border: 'border-lime-900', text: 'text-lime-800' },
+                        { name: 'Icefield', icon: 'ac_unit', bg: 'bg-cyan-950', border: 'border-cyan-900', text: 'text-cyan-600' }
+                    ];
+                    
+                    const enemyUnits = {
+                        3: { type: 'elite', hp: 90, max: 100, icon: 'skull', color: 'purple' },
+                        8: { type: 'ranged', hp: 45, max: 60, icon: 'visibility', color: 'red' },
+                        12: { type: 'ranged', hp: 60, max: 60, icon: 'visibility', color: 'red' },
+                        16: { type: 'infantry', hp: 80, max: 80, icon: 'swords', color: 'red' },
+                        17: { type: 'infantry', hp: 20, max: 80, icon: 'swords', color: 'red' },
+                        18: { type: 'infantry', hp: 75, max: 80, icon: 'swords', color: 'red' }
+                    };
+                    
+                    // VOID STATE: Tile 24 has been used to summon a unit - now shows void
+                    const voidTiles = [24];
+                    
+                    const selectedIndex = 38;
+                    
+                    for(let i=0; i<63; i++) {
+                        let tIndex = (i * 7 + 4) % 9;
+                        if (i === selectedIndex) tIndex = terrainTypes.findIndex(t => t.name === 'Lava');
+                        if (i < 7 || i > 55) tIndex = terrainTypes.findIndex(t => t.name === 'Rock');
+                        const t = terrainTypes[tIndex];
+                        
+                        let content = `<span class='material-symbols-outlined ${t.text} opacity-20 text-3xl group-hover:scale-110 transition-transform duration-500 select-none'>${t.icon}</span>`;
+                        let classes = `${t.bg}/90 ${t.border} hover:border-white/30 hover:brightness-125`;
+                        let innerStyle = '';
+                        
+                        // --- VOID STATE TILE ---
+                        if (voidTiles.includes(i)) {
+                            classes = 'void-state';
+                            content = `
+                                <div class="rune-ring"></div>
+                                <div class="void-crack">
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <path d="M20,20 L35,45 L25,70 L50,55 L75,80 L65,50 L80,25 L50,40 Z" 
+                                              fill="none" 
+                                              stroke="rgba(147, 112, 219, 0.6)" 
+                                              stroke-width="1.5"/>
+                                        <path d="M10,50 L30,55 L25,75" 
+                                              fill="none" 
+                                              stroke="rgba(107, 76, 154, 0.4)" 
+                                              stroke-width="1"/>
+                                        <path d="M70,15 L75,35 L90,40" 
+                                              fill="none" 
+                                              stroke="rgba(107, 76, 154, 0.4)" 
+                                              stroke-width="1"/>
+                                    </svg>
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center z-20">
+                                    <span class='material-symbols-outlined text-void/60 text-2xl animate-pulse'>brightness_3</span>
+                                </div>
+                                <div class="absolute bottom-1 left-1/2 -translate-x-1/2 text-[8px] text-void/80 uppercase tracking-widest font-bold">VOID</div>
+                            `;
+                        }
+                        // --- ENEMY UNITS ---
+                        else if (enemyUnits[i]) {
+                            const u = enemyUnits[i];
+                            let shapeHtml = '';
+                            let glowClass = u.color === 'purple' ? 'shape-shadow-purple' : 'shape-shadow-red';
+                            let fillColor = u.color === 'purple' ? '#581c87' : '#7f1d1d';
+                            let strokeColor = u.color === 'purple' ? '#c084fc' : '#f87171';
+                            let hpPercent = (u.hp / u.max) * 100;
+                            let hpColor = hpPercent > 50 ? 'bg-green-500' : 'bg-red-500';
+                            
+                            content += `<div class="absolute inset-0 z-30 flex flex-col items-center justify-center animate-float pointer-events-none">
+                                <div class="w-8 h-1.5 bg-black/80 rounded-full mb-1 overflow-hidden border border-white/20">
+                                    <div class="h-full ${hpColor} transition-all duration-300" style="width: ${hpPercent}%"></div>
+                                </div>`;
+                            
+                            if (u.type === 'elite') {
+                                shapeHtml = `
+                                <div class="${glowClass} w-14 h-14 flex items-center justify-center relative">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-xl">
+                                        <path d="M50 5 L95 27.5 L95 72.5 L50 95 L5 72.5 L5 27.5 Z" fill="${fillColor}" stroke="${strokeColor}" stroke-width="4" />
+                                    </svg>
+                                    <span class="material-symbols-outlined absolute text-xl text-white drop-shadow-lg">${u.icon}</span>
+                                </div>`;
+                            } else if (u.type === 'ranged') {
+                                shapeHtml = `
+                                <div class="${glowClass} w-12 h-12 flex items-center justify-center relative pt-1">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-lg">
+                                        <path d="M10 10 L90 10 L50 90 Z" fill="${fillColor}" stroke="${strokeColor}" stroke-width="5" />
+                                    </svg>
+                                    <span class="material-symbols-outlined absolute top-1 text-lg text-white drop-shadow-lg">${u.icon}</span>
+                                </div>`;
+                            } else if (u.type === 'infantry') {
+                                shapeHtml = `
+                                <div class="${glowClass} w-10 h-10 flex items-center justify-center relative">
+                                    <div class="w-full h-full shadow-lg" style="background-color: ${fillColor}; border: 2px solid ${strokeColor};"></div>
+                                    <span class="material-symbols-outlined absolute text-lg text-white drop-shadow-lg">${u.icon}</span>
+                                </div>`;
+                            }
+                            content += shapeHtml + `</div>`;
+                            classes = `${t.bg} border-${u.color}-500/50 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]`;
+                        }
+                        // --- PLAYER STRUCTURES ---
+                        else if (i === 59) {
+                            content += `
+                                <div class="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[8px] uppercase tracking-widest text-white bg-ally font-sans font-bold z-30 px-2 py-0.5 rounded shadow-lg whitespace-nowrap">King</div>
+                                <div class="absolute inset-0 flex items-center justify-center z-20 -translate-y-1 drop-shadow-[0_10px_5px_rgba(0,0,0,0.8)]">
+                                    <span class='material-symbols-outlined text-ally text-4xl drop-shadow-[0_0_20px_rgba(42,138,223,0.8)]'>crown</span>
+                                </div>`;
+                            classes = `${t.bg} border-2 border-ally shadow-[inset_0_0_20px_rgba(42,138,223,0.3)]`;
+                        }
+                        else if (i === 57 || i === 61) {
+                            content += `
+                                <div class="absolute inset-0 flex items-center justify-center z-20 -translate-y-1 drop-shadow-[0_8px_4px_rgba(0,0,0,0.8)]">
+                                    <span class='material-symbols-outlined text-ally text-3xl opacity-90'>security</span>
+                                </div>`;
+                            classes = `${t.bg} border border-ally/40 shadow-[inset_0_0_10px_rgba(42,138,223,0.1)]`;
+                        }
+                        // --- SELECTED TILE ---
+                        else if (i === selectedIndex) {
+                            classes = "bg-red-900/30 border-2 border-red-500/80 shadow-[0_0_25px_rgba(239,68,68,0.4)] z-30 relative";
+                            innerStyle = `<div class="absolute inset-0 border-2 border-red-500 animate-pulse opacity-60 rounded-sm"></div>`;
+                            content = `<span class='material-symbols-outlined text-red-500 text-4xl drop-shadow-[0_0_15px_rgba(239,68,68,1)] z-10'>volcano</span>`;
+                        }
+                        
+                        document.write(`<div class="relative tile-inset rounded-lg border transition-all duration-150 cursor-crosshair flex items-center justify-center group overflow-hidden ${classes}">
+                            ${innerStyle}
+                            ${content}
+                        </div>`);
+                    }
+                </script>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: Tactical Log -->
+        <aside class="absolute right-4 top-1/2 -translate-y-1/2 w-64 flex flex-col gap-3 z-30">
+            <div class="glass-panel border-r-2 border-stone-600/30 p-4 rounded-l-xl h-[45vh] flex flex-col relative overflow-hidden">
+                <!-- Decorative Corner -->
+                <div class="absolute top-0 left-0 w-8 h-8 border-t border-l border-stone-600/30 rounded-tl-lg"></div>
+                
+                <h3 class="text-[10px] text-stone-400 font-bold tracking-[0.2em] uppercase mb-4 flex items-center gap-2 border-b border-white/5 pb-2 justify-end">
+                    Tactical Log <span class="material-symbols-outlined text-sm text-stone-500">receipt_long</span>
+                </h3>
+                
+                <div class="flex-1 overflow-y-auto custom-scroll space-y-3 pr-2 text-right">
+                    <div class="opacity-100">
+                        <div class="text-[10px] text-void font-mono mb-0.5 flex items-center justify-end gap-1">
+                            <span class="animate-pulse">●</span> 02:14
+                        </div>
+                        <div class="text-xs text-void border-r-2 border-void pr-2 bg-void/10 py-1 rounded-l">
+                            Void Tile Created
+                        </div>
+                    </div>
+                    <div class="opacity-90">
+                        <div class="text-[10px] text-red-400 font-mono mb-0.5">02:13</div>
+                        <div class="text-xs text-red-300 border-r-2 border-red-500 pr-2">
+                            Fire Spirit Summoned <span class="text-white font-bold">[D4]</span>
+                        </div>
+                    </div>
+                    <div class="opacity-80">
+                        <div class="text-[10px] text-elite-glow font-mono mb-0.5">02:12</div>
+                        <div class="text-xs text-elite-glow border-r-2 border-elite pr-2">
+                            Enemy Elite Damaged <span class="text-white font-bold">(-10)</span>
+                        </div>
+                    </div>
+                    <div class="opacity-60">
+                        <div class="text-[10px] text-stone-500 font-mono mb-0.5">02:10</div>
+                        <div class="text-xs text-stone-400 border-r-2 border-stone-600 pr-2">
+                            Unit moved to [C4]
+                        </div>
+                    </div>
+                    <div class="opacity-50">
+                        <div class="text-[10px] text-stone-600 font-mono mb-0.5">02:08</div>
+                        <div class="text-xs text-stone-500 border-r-2 border-stone-700 pr-2">
+                            Round Start
+                        </div>
+                    </div>
+                    <div class="opacity-40">
+                        <div class="text-[10px] text-stone-600 font-mono mb-0.5">01:55</div>
+                        <div class="text-xs text-stone-500 border-r-2 border-stone-700 pr-2">
+                            Deck Shuffled
+                        </div>
+                    </div>
+                    <div class="opacity-30">
+                        <div class="text-[10px] text-stone-700 font-mono mb-0.5">01:50</div>
+                        <div class="text-xs text-stone-600 border-r-2 border-stone-800 pr-2">
+                            Battle Started
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="glass-panel p-3 rounded-xl">
+                <div class="text-[9px] text-stone-500 uppercase tracking-wider mb-2 text-center">Quick Actions</div>
+                <div class="flex gap-2 justify-center">
+                    <button class="flex-1 bg-stone-800 hover:bg-stone-700 border border-stone-600 rounded-lg py-2 flex flex-col items-center gap-1 transition-colors">
+                        <span class="material-symbols-outlined text-sm text-stone-400">flag</span>
+                        <span class="text-[8px] text-stone-500">End Turn</span>
+                    </button>
+                    <button class="flex-1 bg-stone-800 hover:bg-stone-700 border border-stone-600 rounded-lg py-2 flex flex-col items-center gap-1 transition-colors">
+                        <span class="material-symbols-outlined text-sm text-stone-400">menu_book</span>
+                        <span class="text-[8px] text-stone-500">Rules</span>
+                    </button>
+                    <button class="flex-1 bg-stone-800 hover:bg-stone-700 border border-stone-600 rounded-lg py-2 flex flex-col items-center gap-1 transition-colors">
+                        <span class="material-symbols-outlined text-sm text-stone-400">settings</span>
+                        <span class="text-[8px] text-stone-500">Settings</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- BOTTOM: Hand Cards -->
+    <div class="fixed bottom-0 w-full z-50 px-8 pb-5 flex justify-center items-end pointer-events-none bg-gradient-to-t from-black via-black/60 to-transparent pt-16">
+        <div class="pointer-events-auto flex items-end gap-3 perspective-1000">
+            <!-- Hand Label -->
+            <div class="hidden xl:flex flex-col justify-end pb-10 mr-2">
+                <h3 class="text-stone-500 text-[10px] font-bold tracking-[0.3em] uppercase text-right leading-none -rotate-90 origin-bottom-right translate-x-6">Your Hand</h3>
+            </div>
+            
+            <!-- Card 1: Terra (Active) -->
+            <div class="relative bg-stone-900 w-28 h-40 rounded-xl border-2 border-earth shadow-[0_0_20px_rgba(61,214,107,0.2)] flex flex-col overflow-hidden cursor-grab group card-hover select-none active:cursor-grabbing translate-y-2 hover:translate-y-[-20px] transition-all duration-300">
+                <div class="h-20 bg-gradient-to-b from-stone-950 to-stone-900 flex items-center justify-center relative shrink-0 border-b border-earth/30">
+                    <div class="absolute inset-0 bg-earth/10"></div>
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(61,214,107,0.2)_0%,transparent_70%)]"></div>
+                    <span class="material-symbols-outlined text-earth text-4xl group-hover:scale-110 transition-transform drop-shadow-[0_0_15px_rgba(61,214,107,0.6)]">spa</span>
+                    <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-stone-900 border-2 border-earth text-earth text-xs flex items-center justify-center font-bold shadow-lg">2</div>
+                </div>
+                <div class="flex-1 p-2.5 flex flex-col justify-between relative bg-stone-900">
+                    <div>
+                        <div class="text-earth font-bold uppercase tracking-wider text-[10px] text-center">Terra</div>
+                        <div class="text-[8px] text-stone-500 mt-1 text-center leading-tight">Summon Forest Tile</div>
+                    </div>
+                    <div class="flex justify-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-earth/60"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-earth/30"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card 2: Ignis -->
+            <div class="relative bg-stone-900 w-28 h-40 rounded-xl border border-stone-700 hover:border-fire shadow-lg flex flex-col overflow-hidden cursor-grab group card-hover select-none active:cursor-grabbing translate-y-2 hover:translate-y-[-20px] transition-all duration-300">
+                <div class="h-20 bg-gradient-to-b from-stone-950 to-stone-900 flex items-center justify-center relative shrink-0 border-b border-stone-700 group-hover:border-fire/30 transition-colors">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(214,61,61,0.15)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <span class="material-symbols-outlined text-fire text-4xl group-hover:scale-110 transition-transform opacity-80 group-hover:opacity-100 drop-shadow-[0_0_10px_rgba(214,61,61,0.4)]">local_fire_department</span>
+                    <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-stone-900 border border-stone-600 group-hover:border-fire text-stone-400 group-hover:text-fire text-xs flex items-center justify-center font-bold transition-colors">3</div>
+                </div>
+                <div class="flex-1 p-2.5 flex flex-col justify-between relative bg-stone-900">
+                    <div>
+                        <div class="text-stone-400 group-hover:text-fire font-bold uppercase tracking-wider text-[10px] text-center transition-colors">Ignis</div>
+                        <div class="text-[8px] text-stone-600 mt-1 text-center leading-tight">AoE Fire Damage</div>
+                    </div>
+                    <div class="flex justify-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-fire/40"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-fire/20"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-fire/20"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card 3: Aqua -->
+            <div class="relative bg-stone-900 w-28 h-40 rounded-xl border border-stone-700 hover:border-water shadow-lg flex flex-col overflow-hidden cursor-grab group card-hover select-none active:cursor-grabbing translate-y-2 hover:translate-y-[-20px] transition-all duration-300">
+                <div class="h-20 bg-gradient-to-b from-stone-950 to-stone-900 flex items-center justify-center relative shrink-0 border-b border-stone-700 group-hover:border-water/30 transition-colors">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(61,151,214,0.15)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <span class="material-symbols-outlined text-water text-4xl group-hover:scale-110 transition-transform opacity-80 group-hover:opacity-100 drop-shadow-[0_0_10px_rgba(61,151,214,0.4)]">water_drop</span>
+                    <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-stone-900 border border-stone-600 group-hover:border-water text-stone-400 group-hover:text-water text-xs flex items-center justify-center font-bold transition-colors">4</div>
+                </div>
+                <div class="flex-1 p-2.5 flex flex-col justify-between relative bg-stone-900">
+                    <div>
+                        <div class="text-stone-400 group-hover:text-water font-bold uppercase tracking-wider text-[10px] text-center transition-colors">Aqua</div>
+                        <div class="text-[8px] text-stone-600 mt-1 text-center leading-tight">Impassable River</div>
+                    </div>
+                    <div class="flex justify-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-water/40"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-water/40"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-water/20"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-water/20"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card 4: Inanis (Void) -->
+            <div class="relative bg-stone-900 w-28 h-40 rounded-xl border border-stone-700 hover:border-void shadow-lg flex flex-col overflow-hidden cursor-grab group card-hover select-none active:cursor-grabbing translate-y-2 hover:translate-y-[-20px] transition-all duration-300">
+                <div class="h-20 bg-gradient-to-b from-stone-950 to-stone-900 flex items-center justify-center relative shrink-0 border-b border-stone-700 group-hover:border-void/30 transition-colors">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(107,76,154,0.2)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <span class="material-symbols-outlined text-void text-4xl group-hover:scale-110 transition-transform opacity-80 group-hover:opacity-100 drop-shadow-[0_0_10px_rgba(107,76,154,0.5)]">brightness_3</span>
+                    <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-stone-900 border border-stone-600 group-hover:border-void text-stone-400 group-hover:text-void text-xs flex items-center justify-center font-bold transition-colors">6</div>
+                </div>
+                <div class="flex-1 p-2.5 flex flex-col justify-between relative bg-stone-900">
+                    <div>
+                        <div class="text-stone-400 group-hover:text-void font-bold uppercase tracking-wider text-[10px] text-center transition-colors">Inanis</div>
+                        <div class="text-[8px] text-stone-600 mt-1 text-center leading-tight">Global Teleport</div>
+                    </div>
+                    <div class="flex justify-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-void/40"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-void/40"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-void/40"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-void/20"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-void/20"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-void/20"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generate Starfield -->
+    <script>
+        const starfield = document.getElementById('starfield');
+        const starCount = 100;
+        
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = Math.random() * 2 + 1 + 'px';
+            star.style.height = star.style.width;
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            starfield.appendChild(star);
+        }
+    </script>
+</body>
+</html>

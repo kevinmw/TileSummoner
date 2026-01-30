@@ -84,16 +84,16 @@ TileSummoner/
 
 ## Project Status
 
-| 模块 | 状态 |
-|------|------|
-| 设计文档 | 完成 (13个) |
-| 消息系统 | 已实现 |
-| 地块系统 | 开发中 |
-| 地形配置 | 开发中 |
-| 单位系统 | 未开始 |
-| 经济系统 | 未开始 |
-| 战斗系统 | 未开始 |
-| UI系统 | 开发中 |
+|模块 |状态 |
+|---|---|
+|设计文档 |完成 (13个) |
+|消息系统 |已实现 |
+|地块系统 |开发中 |
+|地形配置 |开发中 |
+|单位系统 |未开始 |
+|经济系统 |未开始 |
+|战斗系统 |未开始 |
+|UI系统 |开发中 |
 
 ## Quick Start
 
@@ -178,20 +178,20 @@ func spawn_unit(data: UnitData, pos: Vector2i) -> Unit:
 
 ## Available Commands
 
-| 命令 | 用途 |
-|------|------|
-| `/godot-tdd-workflow` | 测试驱动开发工作流 (GdUnit4) |
-| `/plan` | 创建实现计划 |
-| `/code-review` | 代码质量审查 |
-| `/commit` | 创建 Git 提交 |
+|命令 |用途 |
+|---|---|
+|`/godot-tdd-workflow` |测试驱动开发工作流 (GdUnit4) |
+|`/plan` |创建实现计划 |
+|`/code-review` |代码质量审查 |
+|`/commit` |创建 Git 提交 |
 
 ## Tool Preferences (MCP 优先级)
 
-| MCP | 用途 |
-|-----|------|
-| **Godot MCP** | 项目信息、场景操作、运行游戏 |
-| Godot MCP ultimate | 自动化测试、代码校验 |
-| **Serena MCP** | 代码结构、符号搜索、文件导航 |
+|MCP |用途 |
+|---|---|
+|**Godot MCP** |项目信息、场景操作、运行游戏 |
+|Godot MCP ultimate |自动化测试、代码校验 |
+|**Serena MCP** |代码结构、符号搜索、文件导航 |
 
 ## Git Workflow
 
@@ -204,7 +204,6 @@ func spawn_unit(data: UnitData, pos: Vector2i) -> Unit:
   - `perf`: 性能优化
   - `test`: 测试
   - `chore`: 构建/工具
-
 - **分支规则**：
   - 不直接提交到 main
   - PR 需要审查
@@ -212,13 +211,14 @@ func spawn_unit(data: UnitData, pos: Vector2i) -> Unit:
 
 ## Related Documentation
 
-| 文档 | 用途 |
-|------|------|
-| `Docs/CODING_STANDARDS.md` | 完整 GDScript 编码标准 |
-| `Docs/game_design/*.md` | 游戏设计文档 (13个) |
-| `Docs/游戏创意记录——地块召唤师.md` | 核心设计概念 |
+|文档 |用途 |
+|---|---|
+|`Docs/CODING_STANDARDS.md` |完整 GDScript 编码标准 |
+|`Docs/game_design/*.md` |游戏设计文档 (13个) |
+|`Docs/游戏创意记录——地块召唤师.md` |核心设计概念 |
 
 ## AI Usage Guidelines
+
 
 1. **阅读设计文档**：实现功能前先阅读 `Docs/game_design/`
 2. **使用 Godot MCP**：项目操作优先使用 Godot MCP 工具
@@ -231,24 +231,30 @@ func spawn_unit(data: UnitData, pos: Vector2i) -> Unit:
 ### 已实现模块
 
 **消息系统** (`Scripts/message/`)
+
 - MessageServer - 全局消息路由单例
 - 19 种消息类型 - Tile, Unit, Card, Combat, Base, Flow, Economy, Zone 事件
 
 ### 开发中模块
 
 **地块系统** (`Scripts/tile/`)
+
 - Tile - 地块节点脚本
 - TileBlockData - 地块数据容器
 - TileDatabase - 地块注册表
 
 **地形配置** (`Scenes/ui/terrain_config/`)
+
 - 地形类型选择 UI
 - 地形属性配置界面
 
 ### 待实现模块
+
 
 1. **单位系统** - 召唤、移动、AI
 2. **经济系统** - 法力值、金币管理
 3. **战斗系统** - 攻击、技能、胜负判定
 4. **卡牌系统** - 卡组管理、抽卡、出牌
 5. **连通算法** - 路径检测、地块连接判定
+
+

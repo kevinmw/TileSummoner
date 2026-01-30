@@ -8,7 +8,7 @@ class_name SceneManager
 const MAIN_MENU_SCENE: String = "res://Scenes/main_menu.tscn"
 const TILE_EDITOR_SCENE: String = "res://Scenes/tile_editor.tscn"
 const TERRAIN_CONFIG_SCENE: String = "res://Scenes/ui/terrain_config/terrain_config_ui.tscn"
-const BATTLE_SCENE: String = "res://Scenes/battle_scene.tscn"
+const BATTLE_SCENE: String = "res://Scenes/battle_map.tscn"
 const SETTINGS_SCENE: String = "res://Scenes/ui/settings_menu.tscn"
 const SETTINGS_POPUP_SCENE: String = "res://Scenes/ui/settings_popup/settings_popup.tscn"
 

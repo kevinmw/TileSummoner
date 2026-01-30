@@ -1,10 +1,58 @@
-[gd_scene load_steps=2 format=3 uid="uid://buu44mn05bs6i"]
+[gd_scene load_steps=8 format=3 uid="uid://buu44mn05bs6i"]
 
-[ext_resource type="Script" uid="uid://dtlqvs8wuyp8x" path="res://Scripts/tile/grid_manager.gd" id="2_grid"]
+[ext_resource type="Resource" uid="uid://djj8qvx3q0bdy" path="res://Resources/Tiles/Configs/grid_default.tres" id="1_grid_config"]
+[ext_resource type="Script" uid="uid://bxq1o2cqnbxmr" path="res://Scripts/battle/background/battle_background.gd" id="2_battle_bg"]
+[ext_resource type="Script" uid="uid://cxhsqi2kec5xq" path="res://Scripts/battle/grid/battle_grid_manager.gd" id="3_grid_manager"]
+[ext_resource type="Script" uid="uid://dtlqvs8wuyp8x" path="res://Scripts/tile/grid_manager.gd" id="4_legacy_grid"]
+[ext_resource type="Script" uid="uid://cix7flyq15bt7" path="res://Scripts/battle/grid/battle_grid_container.gd" id="5_grid_container"]
+[ext_resource type="Environment" path="res://Resources/environments/battle_environment.tres" id="6_environment"]
+[ext_resource type="Script" uid="uid://cs7bvd4nih32w" path="res://Scripts/battle/battle_map_controller.gd" id="7_controller"]
 
 [node name="BattleMap" type="Node2D"]
+script = ExtResource("7_controller")
 
-[node name="Tiles" type="Node2D" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("6_environment")
 
-[node name="GridManager" type="Node2D" parent="Tiles"]
-script = ExtResource("2_grid")
+[node name="BattleBackground" type="CanvasLayer" parent="."]
+layer = -1
+script = ExtResource("2_battle_bg")
+
+[node name="BattleGridContainer" type="Node2D" parent="."]
+script = ExtResource("5_grid_container")
+
+[node name="GridCells" type="Node2D" parent="BattleGridContainer"]
+
+[node name="BattleGridManager" type="Node2D" parent="."]
+script = ExtResource("3_grid_manager")
+
+[node name="LegacyTiles" type="Node2D" parent="."]
+
+[node name="GridManager" type="Node2D" parent="LegacyTiles"]
+script = ExtResource("4_legacy_grid")
+config = ExtResource("1_grid_config")
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="TopBar" type="HBoxContainer" parent="UI"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+theme_override_constants/separation = 20
+
+[node name="BackButton" type="Button" parent="UI/TopBar"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+text = "Back"
+
+[node name="Spacer" type="Control" parent="UI/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InfoLabel" type="Label" parent="UI/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Difficulty: Easy"
+horizontal_alignment = 2

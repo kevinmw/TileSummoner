@@ -6,7 +6,7 @@
 script = ExtResource("1_config")
 grid_width = 7
 grid_height = 9
-cell_size = Vector2i(67, 54)
-cell_offset = Vector2i(34, 27)
+cell_size = Vector2i(80, 80)
+cell_offset = Vector2i(40, 40)
 player_area_start = 5
 enemy_area_end = 5

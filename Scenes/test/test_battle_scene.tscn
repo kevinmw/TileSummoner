@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/battle/background/battle_background.gd" id="1_battle_bg"]
+[ext_resource type="Script" path="res://Scripts/battle/grid/battle_grid_manager.gd" id="2_grid_manager"]
+[ext_resource type="Script" path="res://Scripts/visual_test/test_battle_scene_controller.gd" id="3_controller"]
+
+[node name="TestBattleScene" type="Node2D"]
+script = ExtResource("3_controller")
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+script = ExtResource("1_battle_bg")
+
+[node name="GameLayer" type="Node2D" parent="."]
+
+[node name="GridManager" type="Node2D" parent="GameLayer"]
+script = ExtResource("2_grid_manager")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+layer = 1
+
+[node name="DebugLabel" type="Label" parent="UILayer"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 400.0
+offset_bottom = 100.0
+text = "Battle Scene Test
+Press SPACE to toggle void on center tile
+Press R to replay spawn animation"

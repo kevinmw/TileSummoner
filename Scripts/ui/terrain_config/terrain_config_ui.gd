@@ -85,7 +85,7 @@ var _initial_inventory_snapshot: Dictionary = {}
 @onready var _tile_inventory: TileInventory = get_node("/root/tileInventory")
 
 ## 难度名称映射
-const DIFFICULTY_NAMES := ["Easy", "Normal", "Hard", "Nightmare"]
+const DIFFICULTY_NAMES := ["Easy", "Medium", "Hard"]
 
 ## ============================================================================
 ## Godot 生命周期
@@ -417,7 +417,43 @@ func _on_back_pressed() -> void:
 
 ## 开始按钮按下
 func _on_start_pressed() -> void:
+	# 发射信号（供外部监听）
 	config_completed.emit(get_current_config())
+
+	# 保存玩家配置到 SceneManager
+	var player_tiles := _get_player_tiles_from_grid()
+	SceneManager.set_player_config(player_tiles)
+
+	# 获取难度设置并跳转到战斗场景
+	var difficulty := _get_enemy_difficulty()
+	SceneManager.transition_to_battle(difficulty)
+
+
+## 从网格配置获取玩家地块数组
+func _get_player_tiles_from_grid() -> Array[TileConstants.TileType]:
+	var tiles: Array[TileConstants.TileType] = []
+	for row in _grid_config:
+		for cell in row:
+			if cell >= 0:
+				tiles.append(cell as TileConstants.TileType)
+			else:
+				# 空槽位使用默认草地
+				tiles.append(TileConstants.TileType.GRASSLAND)
+	return tiles
+
+
+## 获取敌方难度
+func _get_enemy_difficulty() -> TileConstants.ConfigType:
+	var index := _difficulty_option.selected
+	match index:
+		0:
+			return TileConstants.ConfigType.ENEMY_EASY
+		1:
+			return TileConstants.ConfigType.ENEMY_MEDIUM
+		2:
+			return TileConstants.ConfigType.ENEMY_HARD
+		_:
+			return TileConstants.ConfigType.ENEMY_EASY
 
 
 ## 重置按钮按下

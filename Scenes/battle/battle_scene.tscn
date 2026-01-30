@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Scripts/scene/battle_scene_controller.gd" id="1_controller"]
+[ext_resource type="Script" path="res://Scripts/battle/background/battle_background.gd" id="2_battle_bg"]
+[ext_resource type="Script" path="res://Scripts/battle/grid/battle_grid_manager.gd" id="3_grid_manager"]
+[ext_resource type="Script" path="res://Scripts/tile/battle_map_generator.gd" id="4_map_generator"]
+
+[node name="BattleScene" type="Node"]
+script = ExtResource("1_controller")
+
+[node name="BattleMapGenerator" type="Node" parent="."]
+script = ExtResource("4_map_generator")
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+script = ExtResource("2_battle_bg")
+
+[node name="GameLayer" type="Node2D" parent="."]
+
+[node name="BattleGridManager" type="Node2D" parent="GameLayer"]
+script = ExtResource("3_grid_manager")
+
+[node name="Units" type="Node2D" parent="GameLayer"]
+
+[node name="Effects" type="Node2D" parent="GameLayer"]
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 1
+
+[node name="TopBar" type="HBoxContainer" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 200.0
+offset_bottom = 60.0
+
+[node name="BackButton" type="Button" parent="UI/TopBar"]
+custom_minimum_size = Vector2(100, 40)
+text = "Back"

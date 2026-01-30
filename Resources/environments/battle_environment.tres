@@ -1,0 +1,20 @@
+[gd_resource type="Environment" format=3 uid="uid://battle_environment"]
+
+[resource]
+background_mode = 3
+background_canvas_group_mode = 0
+
+glow_enabled = true
+glow_intensity = 0.8
+glow_strength = 1.0
+glow_bloom = 0.1
+glow_blend_mode = 0
+glow_hdr_threshold = 0.8
+glow_hdr_scale = 2.0
+glow_hdr_luminance_cap = 12.0
+
+tonemap_mode = 0
+tonemap_exposure = 1.0
+tonemap_white = 1.0
+
+adjustment_enabled = false

@@ -11,10 +11,11 @@ class_name GridConfig
 @export var grid_height: int = 9
 
 ## 单元格渲染尺寸（像素）
-@export var cell_size: Vector2i = Vector2i(67, 54)
+## 注意：战斗场景使用 80x80，编辑器 UI 可能使用不同尺寸
+@export var cell_size: Vector2i = Vector2i(80, 80)
 
 ## 单元格偏移量（像素，用于居中对齐）
-@export var cell_offset: Vector2i = Vector2i(34, 27)
+@export var cell_offset: Vector2i = Vector2i(40, 40)
 
 ## 玩家区域起始行（从0开始）
 @export_range(0, 9) var player_area_start: int = 5
