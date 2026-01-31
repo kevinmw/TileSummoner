@@ -84,13 +84,17 @@
       "mcp__godot-ultimate__godot_validate_code",
       "Bash(tree:*)",
       "mcp__godot-ultimate__godot_validate_project",
-      "mcp__godot-ultimate__godot_analyze_scene"
+      "mcp__godot-ultimate__godot_analyze_scene",
+      "Bash(magick identify:*)",
+      "Bash(\"C:\\\\Godot\\\\Godot.exe\" --headless -s addons/gdUnit4/bin/GdUnitCmdTool.gd --add \"res://Scripts/test/test_tile_constants.gd\")",
+      "Bash(cmd /c \"cd /d H:\\\\!GameStart\\\\TileSummoner && C:\\\\Godot\\\\Godot.exe --headless -s addons/gdUnit4/bin/GdUnitCmdTool.gd --add res://Scripts/test/test_tile_constants.gd\")",
+      "Bash(for script in \"tile.gd\" \"tile_block_data.gd\" \"tile_config.gd\" \"grid_config.gd\" \"grid_manager.gd\")",
+      "Bash(do echo \"=== Checking $script ===\" grep -r \"$script\" \"H:\\\\!GameStart\\\\TileSummoner/Scenes\" \"H:\\\\!GameStart\\\\TileSummoner/Scripts\")"
     ]
   },
   "enabledPlugins": {
-    "playwright@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
     "planning-with-files@planning-with-files": true,
-    "gdscript-lsp@local": true
+    "gdscript-lsp@local": true,
+    "superpowers@superpowers-marketplace": true
   }
 }

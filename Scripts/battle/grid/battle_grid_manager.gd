@@ -37,8 +37,11 @@ signal spawn_sequence_completed()
 ## 中线行索引
 @export var middle_row: int = 4
 
-## 入场动画行间延迟（秒）
-@export var spawn_row_delay: float = 0.05
+## 入场动画：波纹扩散延迟（每单位距离的秒数）
+@export var spawn_ripple_delay: float = 0.06
+
+## 地块间距（像素）
+@export var tile_spacing: float = 2.0
 
 
 # ============ 常量 ============
@@ -149,18 +152,20 @@ func clear_grid() -> void:
 
 ## 网格坐标转世界坐标（返回地块中心点）
 func grid_to_world(grid_pos: Vector2i) -> Vector2:
+	var cell_size := tile_size + Vector2(tile_spacing, tile_spacing)
 	return Vector2(
-		grid_pos.x * tile_size.x + tile_size.x / 2,
-		grid_pos.y * tile_size.y + tile_size.y / 2
+		grid_pos.x * cell_size.x + tile_size.x / 2,
+		grid_pos.y * cell_size.y + tile_size.y / 2
 	)
 
 
 ## 世界坐标转网格坐标
 func world_to_grid(world_pos: Vector2) -> Vector2i:
+	var cell_size := tile_size + Vector2(tile_spacing, tile_spacing)
 	@warning_ignore("narrowing_conversion")
-	var x: int = int(world_pos.x / tile_size.x)
+	var x: int = int(world_pos.x / cell_size.x)
 	@warning_ignore("narrowing_conversion")
-	var y: int = int(world_pos.y / tile_size.y)
+	var y: int = int(world_pos.y / cell_size.y)
 
 	# 限制在有效范围内
 	x = clampi(x, 0, grid_cols - 1)
@@ -275,7 +280,10 @@ func get_passable_neighbors(grid_pos: Vector2i, include_diagonals: bool = false)
 
 ## 获取地图像素尺寸
 func get_map_size() -> Vector2:
-	return Vector2(grid_cols * tile_size.x, grid_rows * tile_size.y)
+	return Vector2(
+		grid_cols * tile_size.x + (grid_cols - 1) * tile_spacing,
+		grid_rows * tile_size.y + (grid_rows - 1) * tile_spacing
+	)
 
 
 ## 获取地图中心点
@@ -299,17 +307,27 @@ func _generate_middle_row() -> Array[TileConstants.TileType]:
 
 # ============ 入场动画 ============
 
-## 播放入场动画序列
+## 播放入场动画序列（水波纹从中心向外扩散）
 func play_spawn_sequence() -> void:
-	# 从顶部到底部，逐行播放入场动画
+	var center := Vector2(grid_cols / 2.0, grid_rows / 2.0)
+	var max_distance: float = 0.0
+
+	# 计算最大距离
+	for y in range(grid_rows):
+		for x in range(grid_cols):
+			var dist := Vector2(x, y).distance_to(center)
+			max_distance = maxf(max_distance, dist)
+
+	# 从中心向外播放动画
 	for y in range(grid_rows):
 		for x in range(grid_cols):
 			var tile := get_tile_at(Vector2i(x, y))
 			if tile:
-				var delay := y * spawn_row_delay
+				var dist := Vector2(x, y).distance_to(center)
+				var delay := dist * spawn_ripple_delay
 				tile.play_spawn_animation(delay)
 
-	# 计算总动画时间并发射完成信号
-	var total_delay := grid_rows * spawn_row_delay + 0.5  # 加上最后一个动画时间
+	# 发射完成信号
+	var total_delay := max_distance * spawn_ripple_delay + 0.5
 	await get_tree().create_timer(total_delay).timeout
 	spawn_sequence_completed.emit()

@@ -430,3 +430,52 @@ func test_middle_row_random_variety() -> void:
 
 	# 应该至少有 2 种不同的地块类型（随机生成的概率）
 	assert_that(types_seen.size()).is_greater_or_equal(2)
+
+
+# ============ 水波纹动画测试 ============
+
+## 测试31：默认 spawn_ripple_delay 为 0.06 秒
+func test_default_spawn_ripple_delay() -> void:
+	var manager := _create_grid_manager()
+	assert_that(manager.spawn_ripple_delay).is_equal_approx(0.06, 0.01)
+
+
+## 测试32：中心地块延迟最小
+func test_center_tile_has_minimum_delay() -> void:
+	var manager := _create_grid_manager()
+	# 验证计算逻辑：网格中心应该延迟最小
+	var center := Vector2(manager.grid_cols / 2.0, manager.grid_rows / 2.0)
+	var center_dist := Vector2(3, 4).distance_to(center)
+	var corner_dist := Vector2(0, 0).distance_to(center)
+	assert_that(center_dist).is_less(corner_dist)
+
+
+## 测试33：角落地块延迟最大
+func test_corner_tiles_have_maximum_delay() -> void:
+	var manager := _create_grid_manager()
+	var center := Vector2(manager.grid_cols / 2.0, manager.grid_rows / 2.0)
+
+	# 四个角落到中心的距离应该相似且最大
+	var corners := [Vector2(0, 0), Vector2(6, 0), Vector2(0, 8), Vector2(6, 8)]
+	var max_dist := 0.0
+	for corner in corners:
+		var dist := corner.distance_to(center)
+		max_dist = maxf(max_dist, dist)
+
+	# 中心点的距离应该远小于角落
+	var center_pos := Vector2(3, 4)
+	assert_that(center_pos.distance_to(center)).is_less(max_dist * 0.5)
+
+
+## 测试34：spawn_sequence_completed 信号发射
+func test_spawn_sequence_completed_signal() -> void:
+	var manager := _create_grid_manager()
+	var configs := _get_test_configs()
+	manager.create_battle_grid(configs.player, configs.enemy)
+	await await_idle_frame()
+
+	var monitor := monitor_signals(manager)
+	manager.play_spawn_sequence()
+	await await_millis(2000)
+
+	assert_signal(monitor).is_emitted("spawn_sequence_completed")

@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://cm3m5g45kwqy8"]
 
-[ext_resource type="Script" path="res://Scripts/battle/tile/battle_tile.gd" id="1_battle_tile"]
-[ext_resource type="Script" path="res://Scripts/battle/tile/battle_tile_visual.gd" id="2_visual"]
+[ext_resource type="Script" uid="uid://crkk6hxreoq7a" path="res://Scripts/battle/tile/battle_tile.gd" id="1_battle_tile"]
+[ext_resource type="Script" uid="uid://dq8cjsrk055dv" path="res://Scripts/battle/tile/battle_tile_visual.gd" id="2_visual"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tile"]
 size = Vector2(80, 80)
@@ -11,6 +11,8 @@ script = ExtResource("1_battle_tile")
 
 [node name="Visual" type="Node2D" parent="."]
 script = ExtResource("2_visual")
+border_width = 1.0
+corner_radius = 6.0
 
 [node name="Background" type="Sprite2D" parent="Visual"]
 
@@ -21,9 +23,7 @@ width = 2.0
 default_color = Color(0.3, 0.3, 0.3, 0.8)
 
 [node name="Collision" type="Area2D" parent="."]
-collision_layer = 1
 collision_mask = 2
-input_pickable = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision"]
 shape = SubResource("RectangleShape2D_tile")

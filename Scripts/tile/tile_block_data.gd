@@ -78,8 +78,8 @@ class_name TileBlockData
 ## 切换动画：旋转持续时间（秒）
 @export var switch_rotation_duration: float = 0.35
 
-## 入场动画：下落持续时间（秒）
-@export var spawn_duration: float = 0.5
+## 入场动画：持续时间（秒）
+@export var spawn_duration: float = 0.3
 
-## 入场动画：下落距离（像素）
-@export var spawn_fall_distance: float = 500.0
+## 入场动画：初始缩放比例
+@export var spawn_initial_scale: float = 0.0

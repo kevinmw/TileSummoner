@@ -46,7 +46,7 @@ func generate_full_map(player_config: TileConfig, enemy_config: TileConfig) -> A
 
 
 ## 初始化战斗地图
-func initialize_battle_map(grid_manager: GridManager,
+func initialize_battle_map(grid_manager: BattleGridManager,
 						   player_config_type: TileConstants.ConfigType = TileConstants.ConfigType.PLAYER_DEFAULT,
 						   enemy_config_type: TileConstants.ConfigType = TileConstants.ConfigType.ENEMY_EASY) -> void:
 	# 加载配置
@@ -69,7 +69,7 @@ func initialize_battle_map(grid_manager: GridManager,
 
 
 ## 播放入场动画（从上到下）
-func _play_spawn_animation(grid_manager: GridManager) -> void:
+func _play_spawn_animation(grid_manager: BattleGridManager) -> void:
 	for y in range(9):
 		for x in range(7):
 			var tile = grid_manager.get_tile(Vector2i(x, y))
@@ -91,7 +91,7 @@ func get_available_enemy_configs() -> Array[TileConstants.ConfigType]:
 
 ## 使用自定义玩家配置初始化战斗地图
 func initialize_battle_map_with_custom_config(
-	grid_manager: GridManager,
+	grid_manager: BattleGridManager,
 	player_config: Array[TileConstants.TileType],
 	enemy_config_type: TileConstants.ConfigType
 ) -> void:

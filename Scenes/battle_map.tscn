@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://buu44mn05bs6i"]
+[gd_scene load_steps=7 format=3 uid="uid://buu44mn05bs6i"]
 
 [ext_resource type="Resource" uid="uid://djj8qvx3q0bdy" path="res://Resources/Tiles/Configs/grid_default.tres" id="1_grid_config"]
 [ext_resource type="Script" uid="uid://bxq1o2cqnbxmr" path="res://Scripts/battle/background/battle_background.gd" id="2_battle_bg"]
 [ext_resource type="Script" uid="uid://cxhsqi2kec5xq" path="res://Scripts/battle/grid/battle_grid_manager.gd" id="3_grid_manager"]
-[ext_resource type="Script" uid="uid://dtlqvs8wuyp8x" path="res://Scripts/tile/grid_manager.gd" id="4_legacy_grid"]
 [ext_resource type="Script" uid="uid://cix7flyq15bt7" path="res://Scripts/battle/grid/battle_grid_container.gd" id="5_grid_container"]
 [ext_resource type="Environment" path="res://Resources/environments/battle_environment.tres" id="6_environment"]
 [ext_resource type="Script" uid="uid://cs7bvd4nih32w" path="res://Scripts/battle/battle_map_controller.gd" id="7_controller"]
@@ -25,12 +24,7 @@ script = ExtResource("5_grid_container")
 
 [node name="BattleGridManager" type="Node2D" parent="."]
 script = ExtResource("3_grid_manager")
-
-[node name="LegacyTiles" type="Node2D" parent="."]
-
-[node name="GridManager" type="Node2D" parent="LegacyTiles"]
-script = ExtResource("4_legacy_grid")
-config = ExtResource("1_grid_config")
+tile_spacing = 5.0
 
 [node name="UI" type="CanvasLayer" parent="."]
 layer = 10

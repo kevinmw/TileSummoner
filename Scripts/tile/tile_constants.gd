@@ -176,3 +176,23 @@ func is_valid_category(category: TileCategory) -> bool:
 ## 检查是否为有效的配置类型
 func is_valid_config_type(config_type: ConfigType) -> bool:
 	return config_type >= ConfigType.PLAYER_DEFAULT and config_type <= ConfigType.ENEMY_HARD
+
+
+## ============================================================================
+## 资源路径映射
+## ============================================================================
+
+## 获取地形类型对应的背景图片路径
+func get_tile_bg_texture_path(tile_type: TileType) -> String:
+	var type_name := ""
+	match tile_type:
+		TileType.GRASSLAND: type_name = "Grassland"
+		TileType.WATER: type_name = "Water"
+		TileType.SAND: type_name = "Desert"  # 特殊映射：SAND -> Desert
+		TileType.ROCK: type_name = "Rock"
+		TileType.FOREST: type_name = "Forest"
+		TileType.FARMLAND: type_name = "Farmland"
+		TileType.LAVA: type_name = "Lava"
+		TileType.SWAMP: type_name = "Swamp"
+		TileType.ICE: type_name = "Ice"
+	return "res://Assets/Sprites/Tiles/Tile_%s_BG.png" % type_name

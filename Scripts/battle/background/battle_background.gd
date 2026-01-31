@@ -108,6 +108,7 @@ func _setup_components() -> void:
 func _create_cosmic_background() -> void:
 	_cosmic_background = ColorRect.new()
 	_cosmic_background.name = "CosmicBackground"
+	_cosmic_background.mouse_filter = Control.MOUSE_FILTER_IGNORE  # 不阻挡鼠标事件
 	add_child(_cosmic_background)
 
 	_cosmic_background.size = viewport_size
@@ -201,6 +202,7 @@ func _create_grid_overlay() -> void:
 func _create_gradient_overlays() -> void:
 	_gradient_overlays = Control.new()
 	_gradient_overlays.name = "GradientOverlays"
+	_gradient_overlays.mouse_filter = Control.MOUSE_FILTER_IGNORE  # 不阻挡鼠标事件
 	add_child(_gradient_overlays)
 
 	# 顶部渐变
@@ -216,6 +218,7 @@ func _create_gradient_overlays() -> void:
 func _create_edge_gradient(is_top: bool) -> ColorRect:
 	var gradient := ColorRect.new()
 	gradient.size = Vector2(viewport_size.x, 100)
+	gradient.mouse_filter = Control.MOUSE_FILTER_IGNORE  # 不阻挡鼠标事件
 
 	if is_top:
 		gradient.position = Vector2.ZERO

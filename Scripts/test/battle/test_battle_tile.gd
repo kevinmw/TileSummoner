@@ -395,3 +395,52 @@ func test_shader_parameters_configurable() -> void:
 	if visual:
 		visual.set_inset_size(20.0)
 		assert_that(visual.get_inset_size()).is_equal_approx(20.0, 0.01)
+
+
+# ============ 入场动画测试 ============
+
+## 测试34：默认 spawn_duration 为 0.3 秒
+func test_default_spawn_duration() -> void:
+	var tile := _create_battle_tile()
+	assert_that(tile.spawn_duration).is_equal_approx(0.3, 0.01)
+
+
+## 测试35：默认 spawn_initial_scale 为 0.0
+func test_default_spawn_initial_scale() -> void:
+	var tile := _create_battle_tile()
+	assert_that(tile.spawn_initial_scale).is_equal_approx(0.0, 0.01)
+
+
+## 测试36：动画开始时 scale 为初始值
+func test_spawn_animation_initial_scale() -> void:
+	var tile := _create_battle_tile()
+	tile.play_spawn_animation(0.0)
+	await await_millis(50)
+	# 动画刚开始时 scale 应接近初始值
+	assert_that(tile.scale.x).is_less(0.5)
+
+
+## 测试37：动画完成后 scale 为 1
+func test_spawn_animation_final_scale() -> void:
+	var tile := _create_battle_tile()
+	tile.play_spawn_animation(0.0)
+	await await_millis(500)
+	assert_that(tile.scale).is_equal(Vector2.ONE)
+
+
+## 测试38：动画完成后 modulate.a 为 1
+func test_spawn_animation_final_opacity() -> void:
+	var tile := _create_battle_tile()
+	tile.play_spawn_animation(0.0)
+	await await_millis(500)
+	assert_that(tile.modulate.a).is_equal_approx(1.0, 0.01)
+
+
+## 测试39：动画延迟正确工作
+func test_spawn_animation_delay() -> void:
+	var tile := _create_battle_tile()
+	tile.scale = Vector2.ONE
+	tile.play_spawn_animation(0.2)
+	await await_millis(50)
+	# 延迟期间 scale 应该保持原值（还没开始动画）
+	assert_that(tile.scale).is_equal(Vector2.ONE)

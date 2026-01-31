@@ -38,11 +38,11 @@ signal void_state_changed(tile: BattleTile, is_void: bool)
 ## 默认边框颜色
 @export var default_border_color: Color = Color(0.3, 0.3, 0.3, 0.8)
 
-## 入场动画：下落持续时间（秒）
-@export var spawn_duration: float = 0.5
+## 入场动画：持续时间（秒）
+@export var spawn_duration: float = 0.3
 
-## 入场动画：下落距离（像素）
-@export var spawn_fall_distance: float = 500.0
+## 入场动画：初始缩放比例
+@export var spawn_initial_scale: float = 0.0
 
 
 # ============ 核心属性 ============
@@ -236,8 +236,8 @@ func _apply_visual_from_data() -> void:
 	# 更新动画参数
 	if _data.spawn_duration > 0:
 		spawn_duration = _data.spawn_duration
-	if _data.spawn_fall_distance > 0:
-		spawn_fall_distance = _data.spawn_fall_distance
+	if _data.spawn_initial_scale >= 0:
+		spawn_initial_scale = _data.spawn_initial_scale
 
 	# 视觉更新由 BattleTileVisual 子节点处理
 	_update_visual_colors()
@@ -251,6 +251,10 @@ func _update_visual_colors() -> void:
 
 	if not _visual or not _data:
 		return
+
+	# 设置背景图片
+	if _visual.has_method("set_background_from_tile_type"):
+		_visual.set_background_from_tile_type(_data.tile_type)
 
 	# 如果有 BattleTileVisual 脚本，调用其更新方法
 	if _visual.has_method("apply_colors"):
@@ -267,21 +271,29 @@ func _update_visual_colors() -> void:
 
 # ============ 动画 ============
 
-## 播放入场动画
+## 播放入场动画（缩放弹出效果）
 func play_spawn_animation(delay: float = 0.0) -> void:
 	if _tween:
 		_tween.kill()
 
-	var target_pos := position
-	position.y -= spawn_fall_distance
+	# 初始状态
+	scale = Vector2.ONE * spawn_initial_scale
+	modulate.a = 0.0
 
 	if delay > 0:
 		await get_tree().create_timer(delay).timeout
 
 	_tween = create_tween()
-	_tween.tween_property(self, "position", target_pos, spawn_duration)\
+	_tween.set_parallel(true)
+
+	# 缩放动画（弹性效果）
+	_tween.tween_property(self, "scale", Vector2.ONE, spawn_duration)\
 		.set_ease(Tween.EASE_OUT)\
-		.set_trans(Tween.TRANS_BOUNCE)
+		.set_trans(Tween.TRANS_BACK)
+
+	# 透明度动画（快速淡入）
+	_tween.tween_property(self, "modulate:a", 1.0, spawn_duration * 0.5)\
+		.set_ease(Tween.EASE_OUT)
 
 
 # ============ 信号发射辅助方法（用于测试）============
@@ -313,11 +325,17 @@ func _on_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -
 ## 鼠标进入
 func _on_mouse_entered() -> void:
 	tile_hovered.emit(self)
+	# 通知 Visual 更新悬停状态
+	if _visual and _visual.has_method("set_hovered"):
+		_visual.set_hovered(true)
 
 
 ## 鼠标离开
 func _on_mouse_exited() -> void:
 	tile_unhovered.emit(self)
+	# 通知 Visual 更新悬停状态
+	if _visual and _visual.has_method("set_hovered"):
+		_visual.set_hovered(false)
 
 
 # ============ 碰撞事件处理 ============
