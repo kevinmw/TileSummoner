@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dgu24kqh1ovvn"]
+[gd_scene load_steps=5 format=3 uid="uid://dgu24kqh1ovvn"]
 
 [ext_resource type="Script" path="res://Scripts/unit/unit.gd" id="1_unit"]
 [ext_resource type="Script" path="res://Scripts/unit/visual/shape_renderer.gd" id="2_renderer"]
+[ext_resource type="Script" path="res://Scripts/unit/ability/ability_manager.gd" id="3_ability_manager"]
+[ext_resource type="Script" path="res://Scripts/unit/behavior/behavior_manager.gd" id="4_behavior_manager"]
 
 [node name="Unit" type="CharacterBody2D"]
 script = ExtResource("1_unit")
@@ -13,3 +15,9 @@ script = ExtResource("2_renderer")
 
 [node name="IconSprite" type="Sprite2D" parent="ShapeRenderer"]
 modulate = Color(1, 1, 1, 0.2)
+
+[node name="AbilityManager" type="Node" parent="."]
+script = ExtResource("3_ability_manager")
+
+[node name="BehaviorManager" type="Node" parent="."]
+script = ExtResource("4_behavior_manager")

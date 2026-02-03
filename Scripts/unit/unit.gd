@@ -36,6 +36,8 @@ var last_attacker: Unit = null
 @onready var shape_renderer: ShapeRenderer = $ShapeRenderer
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var icon_sprite: Sprite2D = $ShapeRenderer/IconSprite
+@onready var ability_manager: AbilityManager = $AbilityManager
+@onready var behavior_manager: BehaviorManager = $BehaviorManager
 
 # ============ 公共方法 ============
 
@@ -58,6 +60,14 @@ func initialize(unit_data: UnitData, unit_team: int) -> void:
 
 	# 配置碰撞
 	_setup_collision()
+
+	# 初始化能力管理器
+	if ability_manager:
+		ability_manager.initialize(self, data.abilities)
+
+	# 初始化行为管理器
+	if behavior_manager:
+		behavior_manager.initialize(self)
 
 
 ## 受到伤害
@@ -92,7 +102,8 @@ func is_alive() -> bool:
 
 ## 获取攻击范围
 func get_attack_range() -> float:
-	# TODO: 从能力管理器获取
+	if ability_manager:
+		return ability_manager.get_max_attack_range()
 	return 0.0
 
 
