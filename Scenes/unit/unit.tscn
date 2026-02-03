@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgu24kqh1ovvn"]
+
+[ext_resource type="Script" path="res://Scripts/unit/unit.gd" id="1_unit"]
+[ext_resource type="Script" path="res://Scripts/unit/visual/shape_renderer.gd" id="2_renderer"]
+
+[node name="Unit" type="CharacterBody2D"]
+script = ExtResource("1_unit")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="ShapeRenderer" type="Node2D" parent="."]
+script = ExtResource("2_renderer")
+
+[node name="IconSprite" type="Sprite2D" parent="ShapeRenderer"]
+modulate = Color(1, 1, 1, 0.2)
