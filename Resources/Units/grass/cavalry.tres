@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="UnitData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/unit/unit_data.gd" id="1"]
+[ext_resource type="Script" path="res://Scripts/unit/ability/data/melee_attack_ability.gd" id="2"]
+
+[sub_resource type="Resource" id="Resource_melee"]
+script = ExtResource("2")
+id = &"cavalry_melee"
+trigger = 0
+damage = 30
+attack_range = 0.8
+attack_interval = 1.2
+
+[resource]
+script = ExtResource("1")
+id = &"cavalry"
+display_name = "草原骑兵"
+base_color = Color(0.2, 0.8, 0.3, 1)
+unit_mode = 1
+unit_size = 2
+max_health = 150
+move_speed = 3.0
+element_tag = 4
+move_type = 0
+target_priority = 0
+abilities = [SubResource("Resource_melee")]
+mana_cost = 4
+required_terrain = &"grassland"
+spawn_count = 1
