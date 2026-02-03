@@ -36,8 +36,10 @@ var last_attacker: Unit = null
 @onready var shape_renderer: ShapeRenderer = $ShapeRenderer
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var icon_sprite: Sprite2D = $ShapeRenderer/IconSprite
-@onready var ability_manager: AbilityManager = $AbilityManager
-@onready var behavior_manager: BehaviorManager = $BehaviorManager
+## 能力管理器（使用 Node 类型避免循环依赖）
+@onready var ability_manager: Node = $AbilityManager
+## 行为管理器（使用 Node 类型避免循环依赖）
+@onready var behavior_manager: Node = $BehaviorManager
 
 # ============ 公共方法 ============
 

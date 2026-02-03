@@ -29,6 +29,7 @@ tileDatabase="*res://Scripts/tile/tile_database.gd"
 TileConstants="*res://Scripts/tile/tile_constants.gd"
 tileInventory="*res://Scripts/inventory/tile_inventory.gd"
 PhantomCameraManager="*uid://duq6jhf6unyis"
+UnitManager="*res://Scripts/unit/unit_manager.gd"
 
 [display]
 
