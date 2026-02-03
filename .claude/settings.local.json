@@ -89,7 +89,12 @@
       "Bash(\"C:\\\\Godot\\\\Godot.exe\" --headless -s addons/gdUnit4/bin/GdUnitCmdTool.gd --add \"res://Scripts/test/test_tile_constants.gd\")",
       "Bash(cmd /c \"cd /d H:\\\\!GameStart\\\\TileSummoner && C:\\\\Godot\\\\Godot.exe --headless -s addons/gdUnit4/bin/GdUnitCmdTool.gd --add res://Scripts/test/test_tile_constants.gd\")",
       "Bash(for script in \"tile.gd\" \"tile_block_data.gd\" \"tile_config.gd\" \"grid_config.gd\" \"grid_manager.gd\")",
-      "Bash(do echo \"=== Checking $script ===\" grep -r \"$script\" \"H:\\\\!GameStart\\\\TileSummoner/Scenes\" \"H:\\\\!GameStart\\\\TileSummoner/Scripts\")"
+      "Bash(do echo \"=== Checking $script ===\" grep -r \"$script\" \"H:\\\\!GameStart\\\\TileSummoner/Scenes\" \"H:\\\\!GameStart\\\\TileSummoner/Scripts\")",
+      "Bash(powershell -c \"Get-Module -ListAvailable -Name BurntToast\")",
+      "Bash(powershell -c \"Install-Module -Name BurntToast -Scope CurrentUser -Force\")",
+      "Bash(powershell -c \"Get-Module -ListAvailable -Name BurntToast | Select-Object Name, Version\")",
+      "Bash(git clone:*)",
+      "mcp__godot-ultimate__godot_parse_ast"
     ]
   },
   "enabledPlugins": {

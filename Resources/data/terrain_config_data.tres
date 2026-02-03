@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="TerrainConfigData" load_steps=12 format=3 uid="uid://im1x7wsebqrf"]
+[gd_resource type="Resource" script_class="TerrainConfigData" format=3 uid="uid://im1x7wsebqrf"]
 
 [ext_resource type="Script" uid="uid://b2f66hpn6plhk" path="res://Scripts/ui/terrain_config/terrain_config_data.gd" id="DataScript"]
 [ext_resource type="Script" uid="uid://c3r5jgavq1ocf" path="res://Scripts/ui/terrain_config/terrain_entry_resource.gd" id="EntryScript"]

@@ -1,51 +1,99 @@
-[gd_scene load_steps=7 format=3 uid="uid://buu44mn05bs6i"]
+[gd_scene format=3 uid="uid://buu44mn05bs6i"]
 
-[ext_resource type="Resource" uid="uid://djj8qvx3q0bdy" path="res://Resources/Tiles/Configs/grid_default.tres" id="1_grid_config"]
 [ext_resource type="Script" uid="uid://bxq1o2cqnbxmr" path="res://Scripts/battle/background/battle_background.gd" id="2_battle_bg"]
 [ext_resource type="Script" uid="uid://cxhsqi2kec5xq" path="res://Scripts/battle/grid/battle_grid_manager.gd" id="3_grid_manager"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_a8s58"]
 [ext_resource type="Script" uid="uid://cix7flyq15bt7" path="res://Scripts/battle/grid/battle_grid_container.gd" id="5_grid_container"]
 [ext_resource type="Environment" path="res://Resources/environments/battle_environment.tres" id="6_environment"]
 [ext_resource type="Script" uid="uid://cs7bvd4nih32w" path="res://Scripts/battle/battle_map_controller.gd" id="7_controller"]
+[ext_resource type="Script" uid="uid://dn1ypkl3c44ry" path="res://Scripts/battle/camera/battle_camera_controller.gd" id="8_camera_controller"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="9_pcam_host"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="10_pcam_2d"]
 
-[node name="BattleMap" type="Node2D"]
+[sub_resource type="Resource" id="Resource_60q10"]
+script = ExtResource("4_a8s58")
+duration = 0.5
+transition = 1
+
+[sub_resource type="Resource" id="Resource_7mkeu"]
+script = ExtResource("4_a8s58")
+duration = 0.5
+transition = 1
+
+[node name="BattleMap" type="Node2D" unique_id=2053275569]
 script = ExtResource("7_controller")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1537889422]
+top_level = true
+position = Vector2(960, 540)
+
+[node name="PhantomCameraHost" type="Node" parent="Camera2D" unique_id=1763128015]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("9_pcam_host")
+
+[node name="CameraTargetMarker" type="Node2D" parent="." unique_id=312751019]
+position = Vector2(280, 360)
+
+[node name="DefaultPCam" type="Node2D" parent="." unique_id=1766408378]
+process_priority = -1
+position = Vector2(960, 540)
+script = ExtResource("10_pcam_2d")
+priority = 1
+tween_resource = SubResource("Resource_60q10")
+
+[node name="ZoomPCam" type="Node2D" parent="." unique_id=592638879 node_paths=PackedStringArray("follow_target")]
+process_priority = -1
+top_level = true
+position = Vector2(280, 360)
+script = ExtResource("10_pcam_2d")
+follow_mode = 2
+follow_target = NodePath("../CameraTargetMarker")
+zoom = Vector2(1.5, 1.5)
+tween_resource = SubResource("Resource_7mkeu")
+
+[node name="BattleCameraController" type="Node2D" parent="." unique_id=1742587531 node_paths=PackedStringArray("default_camera", "zoom_camera", "follow_target")]
+script = ExtResource("8_camera_controller")
+default_camera = NodePath("../DefaultPCam")
+zoom_camera = NodePath("../ZoomPCam")
+follow_target = NodePath("../CameraTargetMarker")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=253094724]
 environment = ExtResource("6_environment")
 
-[node name="BattleBackground" type="CanvasLayer" parent="."]
+[node name="BattleBackground" type="CanvasLayer" parent="." unique_id=792822929]
 layer = -1
 script = ExtResource("2_battle_bg")
 
-[node name="BattleGridContainer" type="Node2D" parent="."]
+[node name="BattleGridContainer" type="Node2D" parent="." unique_id=900901242]
 script = ExtResource("5_grid_container")
 
-[node name="GridCells" type="Node2D" parent="BattleGridContainer"]
+[node name="GridCells" type="Node2D" parent="BattleGridContainer" unique_id=925659408]
 
-[node name="BattleGridManager" type="Node2D" parent="."]
+[node name="BattleGridManager" type="Node2D" parent="." unique_id=999455266]
 script = ExtResource("3_grid_manager")
 tile_spacing = 5.0
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1208478819]
 layer = 10
 
-[node name="TopBar" type="HBoxContainer" parent="UI"]
+[node name="TopBar" type="HBoxContainer" parent="UI" unique_id=68407810]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 50.0
 grow_horizontal = 2
 theme_override_constants/separation = 20
 
-[node name="BackButton" type="Button" parent="UI/TopBar"]
+[node name="BackButton" type="Button" parent="UI/TopBar" unique_id=632928611]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
 text = "Back"
 
-[node name="Spacer" type="Control" parent="UI/TopBar"]
+[node name="Spacer" type="Control" parent="UI/TopBar" unique_id=485124723]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="InfoLabel" type="Label" parent="UI/TopBar"]
+[node name="InfoLabel" type="Label" parent="UI/TopBar" unique_id=1136718191]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Difficulty: Easy"
