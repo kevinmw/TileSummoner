@@ -51,9 +51,9 @@ func get_max_attack_range() -> float:
 
 
 ## 获取指定类型的能力实例
-func get_ability_by_type(type: Variant) -> AbilityInstance:
+func get_ability_by_type(ability_type: Variant) -> AbilityInstance:
 	for child in get_children():
-		if child is AbilityInstance and child.data is type:
+		if child is AbilityInstance and is_instance_of(child.data, ability_type):
 			return child
 	return null
 

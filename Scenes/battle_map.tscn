@@ -9,6 +9,9 @@
 [ext_resource type="Script" uid="uid://dn1ypkl3c44ry" path="res://Scripts/battle/camera/battle_camera_controller.gd" id="8_camera_controller"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="9_pcam_host"]
 [ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="10_pcam_2d"]
+[ext_resource type="Resource" uid="uid://bi22q2tuykiyr" path="res://Resources/Units/buildings/tower.tres" id="11_tower"]
+[ext_resource type="Resource" uid="uid://cd056o8lku5v5" path="res://Resources/Units/buildings/base.tres" id="12_base"]
+[ext_resource type="Resource" uid="uid://ffsuwfkdkxye" path="res://Resources/Units/grass/cavalry.tres" id="13_cavalry"]
 
 [sub_resource type="Resource" id="Resource_60q10"]
 script = ExtResource("4_a8s58")
@@ -22,6 +25,9 @@ transition = 1
 
 [node name="BattleMap" type="Node2D" unique_id=2053275569]
 script = ExtResource("7_controller")
+tower_data = ExtResource("11_tower")
+base_data = ExtResource("12_base")
+test_unit_data = ExtResource("13_cavalry")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1537889422]
 top_level = true
@@ -73,6 +79,14 @@ script = ExtResource("5_grid_container")
 [node name="BattleGridManager" type="Node2D" parent="." unique_id=999455266]
 script = ExtResource("3_grid_manager")
 tile_spacing = 5.0
+
+[node name="BuildingsContainer" type="Node2D" parent="." unique_id=1426729348]
+
+[node name="PlayerBuildings" type="Node2D" parent="BuildingsContainer" unique_id=2147109122]
+
+[node name="EnemyBuildings" type="Node2D" parent="BuildingsContainer" unique_id=924743123]
+
+[node name="UnitsContainer" type="Node2D" parent="." unique_id=1247981258]
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1208478819]
 layer = 10

@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://y44tkdo58doj"]
+[gd_scene format=3 uid="uid://y44tkdo58doj"]
 
 [ext_resource type="Script" uid="uid://d1e7nnxy176o1" path="res://Scripts/ui/main_menu_ui.gd" id="1_menu"]
 [ext_resource type="Script" path="res://Scripts/ui/main_menu/menu_glow_orbs.gd" id="2_orbs"]
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=1897264431]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_menu")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1028772824]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +21,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.02, 0.024, 0.031, 1)
 
-[node name="GradientOverlay" type="ColorRect" parent="."]
+[node name="GradientOverlay" type="ColorRect" parent="." unique_id=721982259]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,11 +30,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)
 
-[node name="GlowOrbsContainer" type="Node2D" parent="."]
+[node name="GlowOrbsContainer" type="Node2D" parent="." unique_id=2044098796]
 unique_name_in_owner = true
 script = ExtResource("2_orbs")
 
-[node name="HSplitLayout" type="HBoxContainer" parent="."]
+[node name="HSplitLayout" type="HBoxContainer" parent="." unique_id=574780012]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -46,19 +46,19 @@ offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LeftPanel" type="VBoxContainer" parent="HSplitLayout"]
+[node name="LeftPanel" type="VBoxContainer" parent="HSplitLayout" unique_id=1714376344]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TopSpacer" type="Control" parent="HSplitLayout/LeftPanel"]
+[node name="TopSpacer" type="Control" parent="HSplitLayout/LeftPanel" unique_id=1176336077]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TitleSection" type="VBoxContainer" parent="HSplitLayout/LeftPanel"]
+[node name="TitleSection" type="VBoxContainer" parent="HSplitLayout/LeftPanel" unique_id=1622599649]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TitleRichText" type="RichTextLabel" parent="HSplitLayout/LeftPanel/TitleSection"]
+[node name="TitleRichText" type="RichTextLabel" parent="HSplitLayout/LeftPanel/TitleSection" unique_id=1191672645]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 140)
 layout_mode = 2
@@ -68,14 +68,14 @@ text = "[font_size=72][color=#f5f5f7]TILE[/color][/font_size]
 fit_content = true
 scroll_active = false
 
-[node name="GoldUnderline" type="ColorRect" parent="HSplitLayout/LeftPanel/TitleSection"]
+[node name="GoldUnderline" type="ColorRect" parent="HSplitLayout/LeftPanel/TitleSection" unique_id=1756131034]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 4)
 layout_mode = 2
 size_flags_horizontal = 0
 color = Color(0.87, 0.7, 0.16, 1)
 
-[node name="SubtitleLabel" type="Label" parent="HSplitLayout/LeftPanel/TitleSection"]
+[node name="SubtitleLabel" type="Label" parent="HSplitLayout/LeftPanel/TitleSection" unique_id=2098041156]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.47, 0.44, 0.42, 1)
@@ -83,15 +83,15 @@ theme_override_font_sizes/font_size = 14
 text = "STRATEGIC TERRAIN WARFARE SIMULATOR"
 uppercase = true
 
-[node name="ButtonSpacer" type="Control" parent="HSplitLayout/LeftPanel"]
+[node name="ButtonSpacer" type="Control" parent="HSplitLayout/LeftPanel" unique_id=128913694]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 
-[node name="ButtonContainer" type="VBoxContainer" parent="HSplitLayout/LeftPanel"]
+[node name="ButtonContainer" type="VBoxContainer" parent="HSplitLayout/LeftPanel" unique_id=549451479]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ContinueButton" type="Button" parent="HSplitLayout/LeftPanel/ButtonContainer"]
+[node name="ContinueButton" type="Button" parent="HSplitLayout/LeftPanel/ButtonContainer" unique_id=1472948365]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
@@ -99,14 +99,14 @@ size_flags_horizontal = 0
 disabled = true
 text = "CONTINUE"
 
-[node name="StartButton" type="Button" parent="HSplitLayout/LeftPanel/ButtonContainer"]
+[node name="StartButton" type="Button" parent="HSplitLayout/LeftPanel/ButtonContainer" unique_id=2127234198]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 text = "START NEW GAME"
 
-[node name="SaveSlotsButton" type="Button" parent="HSplitLayout/LeftPanel/ButtonContainer"]
+[node name="SaveSlotsButton" type="Button" parent="HSplitLayout/LeftPanel/ButtonContainer" unique_id=352389120]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
@@ -114,34 +114,34 @@ size_flags_horizontal = 0
 disabled = true
 text = "SAVE SLOTS"
 
-[node name="SettingsButton" type="Button" parent="HSplitLayout/LeftPanel/ButtonContainer"]
+[node name="SettingsButton" type="Button" parent="HSplitLayout/LeftPanel/ButtonContainer" unique_id=1438164200]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 text = "SETTINGS"
 
-[node name="ExitSpacer" type="Control" parent="HSplitLayout/LeftPanel/ButtonContainer"]
+[node name="ExitSpacer" type="Control" parent="HSplitLayout/LeftPanel/ButtonContainer" unique_id=1697682938]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 
-[node name="ExitButton" type="Button" parent="HSplitLayout/LeftPanel/ButtonContainer"]
+[node name="ExitButton" type="Button" parent="HSplitLayout/LeftPanel/ButtonContainer" unique_id=442167075]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 text = "QUIT TO DESKTOP"
 
-[node name="BottomSpacer" type="Control" parent="HSplitLayout/LeftPanel"]
+[node name="BottomSpacer" type="Control" parent="HSplitLayout/LeftPanel" unique_id=2048737255]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RightSpacer" type="Control" parent="HSplitLayout"]
+[node name="RightSpacer" type="Control" parent="HSplitLayout" unique_id=875044736]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="Footer" type="MarginContainer" parent="."]
+[node name="Footer" type="MarginContainer" parent="." unique_id=590494489]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -155,11 +155,11 @@ offset_bottom = -24.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="FooterContent" type="HBoxContainer" parent="Footer"]
+[node name="FooterContent" type="HBoxContainer" parent="Footer" unique_id=1068937769]
 layout_mode = 2
 alignment = 2
 
-[node name="VersionLabel" type="Label" parent="Footer/FooterContent"]
+[node name="VersionLabel" type="Label" parent="Footer/FooterContent" unique_id=957528808]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.47, 0.44, 0.42, 1)

@@ -58,3 +58,9 @@ enum TargetPriority {
 	HIGHEST_THREAT, ## 最高威胁
 	BUILDING_FIRST  ## 建筑优先
 }
+
+## 建筑类型
+enum BuildingType {
+	TOWER,  ## 防御塔
+	BASE    ## 主基地
+}

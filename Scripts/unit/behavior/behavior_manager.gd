@@ -115,8 +115,69 @@ func _find_target() -> void:
 	if current_target and not has_valid_target():
 		clear_target()
 
-	# TODO: 使用 TargetFinder 或 UnitManager 查找新目标
-	# 暂时保持当前目标不变
+	# 如果已有有效目标，不重新索敌
+	if has_valid_target():
+		return
+
+	# 获取敌方单位
+	var enemies := UnitManager.get_enemies(owner_unit.team)
+	if enemies.is_empty():
+		return
+
+	# 根据优先级选择目标
+	var priority := owner_unit.data.target_priority
+	var new_target := _select_target_by_priority(enemies, priority)
+	if new_target:
+		set_target(new_target)
+
+
+## 根据优先级选择目标
+func _select_target_by_priority(enemies: Array[Unit], priority: UnitEnums.TargetPriority) -> Unit:
+	if enemies.is_empty():
+		return null
+
+	match priority:
+		UnitEnums.TargetPriority.NEAREST:
+			return _get_nearest(enemies)
+		UnitEnums.TargetPriority.LOWEST_HEALTH:
+			return _get_lowest_health(enemies)
+		UnitEnums.TargetPriority.BUILDING_FIRST:
+			return _get_building_first(enemies)
+		_:
+			return _get_nearest(enemies)
+
+
+## 获取最近的敌人
+func _get_nearest(enemies: Array[Unit]) -> Unit:
+	var nearest: Unit = null
+	var min_dist := INF
+	for enemy in enemies:
+		var dist := owner_unit.global_position.distance_to(enemy.global_position)
+		if dist < min_dist:
+			min_dist = dist
+			nearest = enemy
+	return nearest
+
+
+## 获取血量最低的敌人
+func _get_lowest_health(enemies: Array[Unit]) -> Unit:
+	var lowest: Unit = null
+	var min_health := INF
+	for enemy in enemies:
+		if enemy.current_health < min_health:
+			min_health = enemy.current_health
+			lowest = enemy
+	return lowest
+
+
+## 获取建筑优先的敌人
+func _get_building_first(enemies: Array[Unit]) -> Unit:
+	# 优先攻击建筑
+	for enemy in enemies:
+		if enemy is Building:
+			return enemy
+	# 没有建筑则选最近的
+	return _get_nearest(enemies)
 
 
 ## 更新移动

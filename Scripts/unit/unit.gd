@@ -5,6 +5,10 @@ extends CharacterBody2D
 ## 单位主类
 ## 管理单位的生命周期、属性和子系统
 
+# ============ 预加载 ============
+
+const DeathBurstEffectScript: GDScript = preload("res://Scripts/unit/visual/death_burst_effect.gd")
+
 # ============ 信号 ============
 
 signal health_changed(current: int, max_val: int)
@@ -123,6 +127,16 @@ func stop_moving() -> void:
 	velocity = Vector2.ZERO
 
 
+# ============ 生命周期 ============
+
+func _ready() -> void:
+	UnitManager.register(self)
+
+
+func _exit_tree() -> void:
+	UnitManager.unregister(self)
+
+
 ## 向敌方基地移动
 func move_toward_enemy_base() -> void:
 	# TODO: 获取敌方基地位置
@@ -189,4 +203,27 @@ func _update_health_visual() -> void:
 func _die() -> void:
 	is_dead = true
 	died.emit(last_attacker)
-	# TODO: 播放死亡动画后删除
+
+	# 隐藏形状渲染器
+	if shape_renderer:
+		shape_renderer.visible = false
+
+	# 播放爆散效果
+	_play_death_effect()
+
+
+func _play_death_effect() -> void:
+	var effect: Node2D = DeathBurstEffectScript.new()
+	add_child(effect)
+
+	# 获取单位颜色
+	var color := Color.WHITE
+	if data:
+		color = data.base_color
+
+	effect.finished.connect(_on_death_effect_finished)
+	effect.play(color)
+
+
+func _on_death_effect_finished() -> void:
+	queue_free()

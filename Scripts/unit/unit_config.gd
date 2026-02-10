@@ -51,6 +51,6 @@ static func is_circle_shape(mode: UnitEnums.UnitMode) -> bool:
 	return get_shape_sides(mode) == 0
 
 
-## 判断模式是否需要旋转（菱形）
+## 判断模式是否需要旋转（菱形、正方形边朝上）
 static func needs_rotation(mode: UnitEnums.UnitMode) -> bool:
-	return mode == UnitEnums.UnitMode.SUPPORT
+	return mode == UnitEnums.UnitMode.SUPPORT or mode == UnitEnums.UnitMode.BUILDING

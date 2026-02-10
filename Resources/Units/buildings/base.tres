@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3 uid="uid://cd056o8lku5v5"]
+
+[ext_resource type="Script" uid="uid://c07jmrrcrj4pb" path="res://Scripts/unit/building_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://bdsy7nr4ut8lj" path="res://Scripts/unit/ability/data/unit_ability.gd" id="1_16jfd"]
+[ext_resource type="Script" uid="uid://cgmhhf801r8px" path="res://Scripts/unit/ability/data/ranged_attack_ability.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://cnqpr5jbyfdgd" path="res://Assets/Icons/UI/castle.svg" id="3_glvjp"]
+
+[sub_resource type="Resource" id="Resource_ranged"]
+script = ExtResource("2")
+damage = 20
+attack_interval = 2.0
+projectile_speed = 4.0
+id = &"base_ranged"
+
+[resource]
+script = ExtResource("1")
+building_type = 1
+shield_enabled = true
+attack_when_vulnerable = true
+id = &"base"
+display_name = "主基地"
+icon = ExtResource("3_glvjp")
+base_color = Color(0.8, 0.6, 0.2, 1)
+unit_mode = 5
+max_health = 1000
+move_speed = 0.0
+abilities = Array[ExtResource("1_16jfd")]([SubResource("Resource_ranged")])
+mana_cost = 0

@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbattletest001"]
+
+[ext_resource type="Script" path="res://Scripts/test/battle_test_controller.gd" id="1_controller"]
+
+[node name="BattleTestScene" type="Node2D"]
+script = ExtResource("1_controller")
+
+[node name="Buildings" type="Node2D" parent="."]
+
+[node name="Units" type="Node2D" parent="."]
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+layer = 1
+
+[node name="DebugLabel" type="Label" parent="UILayer"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 400.0
+offset_bottom = 150.0
+text = "Building System Test
+
+Controls:
+  1 - Spawn enemy unit
+  2 - Damage player tower (100)
+  3 - Damage player base (100)
+  4 - Kill player tower
+  R - Reset test
+  ESC - Quit"
+
+[node name="StatusLabel" type="Label" parent="UILayer"]
+offset_left = 10.0
+offset_top = 200.0
+offset_right = 300.0
+offset_bottom = 500.0
+text = "Status..."

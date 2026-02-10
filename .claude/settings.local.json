@@ -94,7 +94,14 @@
       "Bash(powershell -c \"Install-Module -Name BurntToast -Scope CurrentUser -Force\")",
       "Bash(powershell -c \"Get-Module -ListAvailable -Name BurntToast | Select-Object Name, Version\")",
       "Bash(git clone:*)",
-      "mcp__godot-ultimate__godot_parse_ast"
+      "mcp__godot-ultimate__godot_parse_ast",
+      "mcp__godot-ultimate__godot_document_symbols",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "mcp__ide__getDiagnostics",
+      "mcp__godot-ultimate__godot_check_patterns",
+      "mcp__godot-ultimate__godot_validate_scenes",
+      "mcp__godot-mcp__update_project_uids"
     ]
   },
   "enabledPlugins": {
