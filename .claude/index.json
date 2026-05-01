@@ -38,7 +38,7 @@
     },
     {
       "name": "resources",
-      "responsibility":资源定义文件",
+      "responsibility":"资源定义文件",
       "status": "to_create",
       "priority": "high"
     },

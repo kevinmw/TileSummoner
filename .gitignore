@@ -27,3 +27,6 @@ github/
 
 # Test reports
 reports/
+
+# Godot 4.4+ auto-generated UID files
+*.uid

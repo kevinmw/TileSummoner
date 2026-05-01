@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://y44tkdo58doj"]
 
 [ext_resource type="Script" uid="uid://d1e7nnxy176o1" path="res://Scripts/ui/main_menu_ui.gd" id="1_menu"]
-[ext_resource type="Script" path="res://Scripts/ui/main_menu/menu_glow_orbs.gd" id="2_orbs"]
+[ext_resource type="Script" uid="uid://dfh1lkrfxhaam" path="res://Scripts/ui/main_menu/menu_glow_orbs.gd" id="2_orbs"]
 
 [node name="MainMenu" type="Control" unique_id=1897264431]
 layout_mode = 3

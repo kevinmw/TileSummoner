@@ -1,5 +1,5 @@
 {
-  "godotTools.editorPath.godot4": "h:\\Godot_v4.5.1-stable_win64.exe\\Godot_v4.5.1-stable_win64.exe",
+  "godotTools.editorPath.godot4": "d:\\Software\\Godot_engine\\Godot_v4.6.2-stable_win64.exe",
   "godot_tools.scene_file_picker.commonScenes": [
     "res://Scenes/tile/tile.tscn",
     "res://Scenes/unit/unit.tscn",
