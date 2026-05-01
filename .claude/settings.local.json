@@ -108,5 +108,8 @@
     "planning-with-files@planning-with-files": true,
     "gdscript-lsp@local": true,
     "superpowers@superpowers-marketplace": true
-  }
+  },
+  "enabledMcpjsonServers": [
+    "godot"
+  ]
 }

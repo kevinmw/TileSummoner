@@ -1,0 +1,226 @@
+[gd_scene format=3 uid="uid://dtjm51xgtio4k"]
+
+[ext_resource type="Script" uid="uid://cpjra8k13ggru" path="res://Scenes/test/slay_the_spire_ui.gd" id="1_3ebrg"]
+[ext_resource type="Script" uid="uid://da3fqfqv6gtgm" path="res://addons/godot_ai/runtime/draw_recipe.gd" id="2_suuid"]
+[ext_resource type="Texture2D" uid="uid://dyei7sf26h7jh" path="res://icon.svg" id="3_fi252"]
+
+[sub_resource type="Animation" id="Animation_suuid"]
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(10, 5), Vector2(0, 0), Vector2(-10, -5), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fi252"]
+_data = {
+&"shake": SubResource("Animation_suuid")
+}
+
+[sub_resource type="Gradient" id="Gradient_3ebrg"]
+offsets = PackedFloat32Array(0, 0.3, 0.7, 1)
+colors = PackedColorArray(1, 1, 0.9, 1, 1, 0.6, 0.1, 1, 0.8, 0.1, 0.05, 0.7, 0.2, 0.05, 0.05, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_suuid"]
+gradient = SubResource("Gradient_3ebrg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fi252"]
+emission_shape = 1
+emission_sphere_radius = 0.3
+direction = Vector3(0, 1, 0)
+spread = 30.0
+initial_velocity_min = 3.0
+initial_velocity_max = 6.0
+gravity = Vector3(0, 1, 0)
+scale_min = 1.5
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_suuid")
+
+[node name="slay_the_spire_ui" type="CanvasLayer" unique_id=760717234]
+
+[node name="MainContainer" type="Control" parent="." unique_id=787245036]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.55118
+offset_top = 2.27559
+offset_right = 4.5511475
+offset_bottom = 2.2756348
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3ebrg")
+
+[node name="Background" type="ColorRect" parent="MainContainer" unique_id=1409522434]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 1)
+
+[node name="TopBar" type="HBoxContainer" parent="MainContainer" unique_id=41273157 groups=["ui_elements"]]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 0
+anchor_right = 1.0
+
+[node name="TurnLabel" type="Label" parent="MainContainer/TopBar" unique_id=217335426]
+layout_mode = 2
+text = "Turn 99"
+horizontal_alignment = 1
+
+[node name="EndTurnButton" type="Button" parent="MainContainer/TopBar" unique_id=69758294]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+text = "End Turn"
+
+[node name="Subtitle" type="Label" parent="MainContainer/TopBar" unique_id=1307792069]
+layout_mode = 2
+text = "Turn 99"
+horizontal_alignment = 1
+
+[node name="EnemyArea" type="Control" parent="MainContainer" unique_id=1965559858]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 0.5
+script = ExtResource("2_suuid")
+metadata/_ops = [{
+"center": Vector2(150, 150),
+"color": Color(1, 0.4, 0, 1),
+"draw": "circle",
+"radius": 30.0
+}]
+
+[node name="EnemySprite" type="Sprite2D" parent="MainContainer/EnemyArea" unique_id=746943300]
+position = Vector2(400, 150)
+
+[node name="EnemyHPBar" type="ProgressBar" parent="MainContainer/EnemyArea" unique_id=1873512775]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 0.15
+offset_left = 50.0
+value = 75.0
+
+[node name="EnemyHPLabel" type="Label" parent="MainContainer/EnemyArea" unique_id=1548472471]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 0.3
+offset_left = 50.0
+text = "75 / 100"
+horizontal_alignment = 1
+
+[node name="IntentIcon" type="TextureRect" parent="MainContainer/EnemyArea" unique_id=877640342]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+anchor_right = 1.0
+offset_left = 350.0
+offset_top = 20.0
+
+[node name="PlayerArea" type="Control" parent="MainContainer" unique_id=2141334635]
+anchors_preset = 0
+anchor_top = 0.7
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PlayerHPBar" type="ProgressBar" parent="MainContainer/PlayerArea" unique_id=1641507149]
+layout_mode = 0
+anchor_right = 0.3
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 250.0
+offset_bottom = 30.0
+value = 60.0
+
+[node name="PlayerHPLabel" type="Label" parent="MainContainer/PlayerArea" unique_id=1895635398]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 35.0
+text = "60 / 80"
+
+[node name="GoldLabel" type="Label" parent="MainContainer/PlayerArea" unique_id=63202700]
+layout_mode = 0
+anchor_right = 1.0
+offset_left = -100.0
+offset_top = 10.0
+text = "Gold: 50"
+horizontal_alignment = 2
+
+[node name="HandArea" type="HBoxContainer" parent="MainContainer" unique_id=1767691652]
+layout_mode = 0
+anchor_top = 0.85
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Card1" type="PanelContainer" parent="MainContainer/HandArea" unique_id=1613441999]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 2
+
+[node name="Card1Label" type="Label" parent="MainContainer/HandArea/Card1" unique_id=1684010815]
+layout_mode = 2
+text = "Strike"
+horizontal_alignment = 1
+
+[node name="Card2" type="PanelContainer" parent="MainContainer/HandArea" unique_id=1366359830]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 2
+
+[node name="Card2Label" type="Label" parent="MainContainer/HandArea/Card2" unique_id=456133973]
+layout_mode = 2
+text = "Defend"
+horizontal_alignment = 1
+
+[node name="Card3" type="PanelContainer" parent="MainContainer/HandArea" unique_id=380774250]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 2
+
+[node name="Card3Label" type="Label" parent="MainContainer/HandArea/Card3" unique_id=256471818]
+layout_mode = 2
+text = "Bash"
+horizontal_alignment = 1
+
+[node name="VictoryDialog" type="PanelContainer" parent="MainContainer" unique_id=1110631222]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 0
+
+[node name="DialogVBox" type="VBoxContainer" parent="MainContainer/VictoryDialog" unique_id=478298061]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="@Label@26188" type="Label" parent="MainContainer/VictoryDialog/DialogVBox" unique_id=1958517530]
+layout_mode = 2
+text = "Victory!"
+
+[node name="@Button@26189" type="Button" parent="MainContainer/VictoryDialog/DialogVBox" unique_id=1159199392]
+layout_mode = 2
+text = "Restart"
+
+[node name="DialogBG" type="ColorRect" parent="MainContainer/VictoryDialog" unique_id=774962353]
+layout_mode = 2
+color = Color(0.1, 0.1, 0.2, 0.9)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1518671343]
+libraries/ = SubResource("AnimationLibrary_fi252")
+autoplay = &"shake"
+
+[node name="FireParticles" type="GPUParticles2D" parent="." unique_id=2104210902]
+position = Vector2(400, 100)
+amount = 100
+texture = ExtResource("3_fi252")
+lifetime = 3.0
+preprocess = 0.5
+process_material = SubResource("ParticleProcessMaterial_fi252")
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="." unique_id=901393459]
+
+[node name="CinematicCam" type="Camera3D" parent="." unique_id=1796946620]
+doppler_tracking = 1
+current = true
+fov = 60.0
+near = 0.1
+far = 500.0
