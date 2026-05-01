@@ -24,6 +24,8 @@ run/window_initial_size=Vector2(1280, 720)
 
 [autoload]
 
+McpInteractionServer="*res://mcp_interaction_server.gd"
+
 MessageServer="*res://Scripts/message/message_server.gd"
 tileDatabase="*res://Scripts/tile/tile_database.gd"
 TileConstants="*res://Scripts/tile/tile_constants.gd"

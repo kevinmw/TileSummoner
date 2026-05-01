@@ -4,59 +4,65 @@ extends GdUnitTestSuite
 
 ## 测试建筑节点类
 
-var _building: Building
-var _building_data: BuildingData
-
 
 func before_test() -> void:
-	_building_data = BuildingData.new()
-	_building_data.max_health = 500
-	_building_data.shield_enabled = true
-	_building_data.building_type = UnitEnums.BuildingType.BASE
-
-	_building = auto_free(Building.new())
-	# 手动创建必要的子节点用于测试
-	var collision := CollisionShape2D.new()
-	collision.name = "CollisionShape2D"
-	_building.add_child(collision)
+	# Building expects child nodes from its scene:
+	# ShapeRenderer (ShapeRenderer2D), CollisionShape2D, AbilityManager, BehaviorManager
+	# We create them manually since we instantiate with Building.new()
+	pass
 
 
 func after_test() -> void:
-	_building_data.free()
+	# Resources created in tests will be auto-freed by the test framework
+	pass
 
 
 ## 测试1：Building 继承自 Unit
 func test_building_extends_unit() -> void:
-	assert_that(_building is Unit).is_true()
+	var building: Building = auto_free(Building.new())
+	assert_that(building is Unit).is_true()
 
 
 ## 测试2：Building 有 shield_active 属性
 func test_building_has_shield_active_property() -> void:
-	assert_that(_building.shield_active).is_true()
+	var building: Building = auto_free(Building.new())
+	assert_that(building.shield_active).is_true()
 
 
 ## 测试3：护盾激活时免疫伤害
 func test_shield_active_blocks_damage() -> void:
-	_building.data = _building_data
-	_building.max_health = 500
-	_building.current_health = 500
-	_building.shield_active = true
+	var building_data: BuildingData = auto_free(BuildingData.new())
+	building_data.max_health = 500
+	building_data.shield_enabled = true
+	building_data.building_type = UnitEnums.BuildingType.BASE
 
-	_building.take_damage(100, null)
+	var building: Building = auto_free(Building.new())
+	building.data = building_data
+	building.max_health = 500
+	building.current_health = 500
+	building.shield_active = true
 
-	assert_that(_building.current_health).is_equal(500)
+	building.take_damage(100, null)
+
+	assert_that(building.current_health).is_equal(500)
 
 
 ## 测试4：护盾关闭后正常受伤
 func test_shield_inactive_allows_damage() -> void:
-	_building.data = _building_data
-	_building.max_health = 500
-	_building.current_health = 500
-	_building.shield_active = false
+	var building_data: BuildingData = auto_free(BuildingData.new())
+	building_data.max_health = 500
+	building_data.shield_enabled = true
+	building_data.building_type = UnitEnums.BuildingType.BASE
 
-	_building.take_damage(100, null)
+	var building: Building = auto_free(Building.new())
+	building.data = building_data
+	building.max_health = 500
+	building.current_health = 500
+	building.shield_active = false
 
-	assert_that(_building.current_health).is_equal(400)
+	building.take_damage(100, null)
+
+	assert_that(building.current_health).is_equal(400)
 
 
 ## 测试5：非护盾建筑正常受伤
@@ -65,24 +71,30 @@ func test_non_shield_building_takes_damage() -> void:
 	tower_data.max_health = 500
 	tower_data.shield_enabled = false
 
-	_building.data = tower_data
-	_building.max_health = 500
-	_building.current_health = 500
-	_building.shield_active = true  # 即使 shield_active 为 true
+	var building: Building = auto_free(Building.new())
+	building.data = tower_data
+	building.max_health = 500
+	building.current_health = 500
+	building.shield_active = true  # 即使 shield_active 为 true
 
-	_building.take_damage(100, null)
+	building.take_damage(100, null)
 
 	# 因为 data.shield_enabled = false，所以仍然受伤
-	assert_that(_building.current_health).is_equal(400)
+	assert_that(building.current_health).is_equal(400)
 
 
 ## 测试6：get_building_type 返回正确类型
 func test_get_building_type() -> void:
-	_building.data = _building_data
-	assert_that(_building.get_building_type()).is_equal(UnitEnums.BuildingType.BASE)
+	var building_data: BuildingData = auto_free(BuildingData.new())
+	building_data.building_type = UnitEnums.BuildingType.BASE
+
+	var building: Building = auto_free(Building.new())
+	building.data = building_data
+	assert_that(building.get_building_type()).is_equal(UnitEnums.BuildingType.BASE)
 
 
 ## 测试7：无数据时 get_building_type 返回 TOWER
 func test_get_building_type_default() -> void:
-	_building.data = null
-	assert_that(_building.get_building_type()).is_equal(UnitEnums.BuildingType.TOWER)
+	var building: Building = auto_free(Building.new())
+	building.data = null
+	assert_that(building.get_building_type()).is_equal(UnitEnums.BuildingType.TOWER)
