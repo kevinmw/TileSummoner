@@ -258,7 +258,7 @@ func set_grid_line_params(color: Color, spacing: int) -> void:
 
 ## 设置星点参数
 func set_star_params(count: int, size_min: float, size_max: float,
-					 twinkle_min: float = 2.0, twinkle_max: float = 4.0) -> void:
+		twinkle_min: float = 2.0, twinkle_max: float = 4.0) -> void:
 	star_count = count
 	star_size_min = size_min
 	star_size_max = size_max

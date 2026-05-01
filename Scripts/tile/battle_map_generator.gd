@@ -47,8 +47,8 @@ func generate_full_map(player_config: TileConfig, enemy_config: TileConfig) -> A
 
 ## 初始化战斗地图
 func initialize_battle_map(grid_manager: BattleGridManager,
-						   player_config_type: TileConstants.ConfigType = TileConstants.ConfigType.PLAYER_DEFAULT,
-						   enemy_config_type: TileConstants.ConfigType = TileConstants.ConfigType.ENEMY_EASY) -> void:
+		player_config_type: TileConstants.ConfigType = TileConstants.ConfigType.PLAYER_DEFAULT,
+		enemy_config_type: TileConstants.ConfigType = TileConstants.ConfigType.ENEMY_EASY) -> void:
 	# 加载配置
 	var player_config := load_player_config(player_config_type)
 	var enemy_config := load_enemy_config(enemy_config_type)

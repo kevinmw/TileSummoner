@@ -197,7 +197,7 @@ func get_all_tiles() -> Array[BattleTile]:
 ## 检查位置是否有效
 func _is_valid_position(grid_pos: Vector2i) -> bool:
 	return grid_pos.x >= 0 and grid_pos.x < grid_cols and \
-		   grid_pos.y >= 0 and grid_pos.y < grid_rows
+		grid_pos.y >= 0 and grid_pos.y < grid_rows
 
 
 # ============ 区域判断 ============

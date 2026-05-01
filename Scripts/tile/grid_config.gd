@@ -68,7 +68,7 @@ func calculate_position(grid_x: int, grid_y: int) -> Vector2:
 ## 验证坐标是否在网格范围内
 func is_valid_cell(cell: Vector2i) -> bool:
 	return cell.x >= 0 and cell.x < grid_width and \
-		   cell.y >= 0 and cell.y < grid_height
+		cell.y >= 0 and cell.y < grid_height
 
 
 ## 判断坐标是否在敌方区域
