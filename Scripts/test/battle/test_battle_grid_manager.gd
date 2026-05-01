@@ -456,10 +456,10 @@ func test_corner_tiles_have_maximum_delay() -> void:
 	var center := Vector2(manager.grid_cols / 2.0, manager.grid_rows / 2.0)
 
 	# 四个角落到中心的距离应该相似且最大
-	var corners := [Vector2(0, 0), Vector2(6, 0), Vector2(0, 8), Vector2(6, 8)]
+	var corners: Array[Vector2] = [Vector2(0, 0), Vector2(6, 0), Vector2(0, 8), Vector2(6, 8)]
 	var max_dist := 0.0
-	for corner in corners:
-		var dist := corner.distance_to(center)
+	for corner: Vector2 in corners:
+		var dist: float = corner.distance_to(center)
 		max_dist = maxf(max_dist, dist)
 
 	# 中心点的距离应该远小于角落

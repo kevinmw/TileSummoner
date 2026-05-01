@@ -61,7 +61,7 @@ func test_shield_inactive_allows_damage() -> void:
 
 ## 测试5：非护盾建筑正常受伤
 func test_non_shield_building_takes_damage() -> void:
-	var tower_data := auto_free(BuildingData.new())
+	var tower_data: BuildingData = auto_free(BuildingData.new())
 	tower_data.max_health = 500
 	tower_data.shield_enabled = false
 

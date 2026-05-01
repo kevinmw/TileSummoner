@@ -40,14 +40,14 @@ func test_create_normal_style_primary() -> void:
 
 	assert_object(style).is_not_null()
 	assert_object(style).is_instanceof(StyleBoxFlat)
-	assert_color(style.border_color).is_equal(UIThemeConstants.GOLD)
-	assert_color(style.bg_color).is_equal(UIThemeConstants.BG_DARK)
+	assert_that(style.border_color).is_equal(UIThemeConstants.GOLD)
+	assert_that(style.bg_color).is_equal(UIThemeConstants.BG_DARK)
 
 
 func test_create_normal_style_default() -> void:
 	var style := StyledButton.create_normal_style(StyledButton.ButtonType.DEFAULT)
 
-	assert_color(style.border_color).is_equal(UIThemeConstants.BORDER_GRAY)
+	assert_that(style.border_color).is_equal(UIThemeConstants.BORDER_GRAY)
 
 
 func test_create_normal_style_secondary() -> void:
@@ -55,13 +55,13 @@ func test_create_normal_style_secondary() -> void:
 
 	# SECONDARY 透明背景
 	assert_float(style.bg_color.a).is_equal_approx(0.0, 0.01)
-	assert_color(style.border_color).is_equal(UIThemeConstants.BORDER_LIGHT)
+	assert_that(style.border_color).is_equal(UIThemeConstants.BORDER_LIGHT)
 
 
 func test_create_normal_style_danger() -> void:
 	var style := StyledButton.create_normal_style(StyledButton.ButtonType.DANGER)
 
-	assert_color(style.border_color).is_equal(UIThemeConstants.BORDER_GRAY)
+	assert_that(style.border_color).is_equal(UIThemeConstants.BORDER_GRAY)
 
 
 func test_create_normal_style_text() -> void:
@@ -75,15 +75,15 @@ func test_create_normal_style_text() -> void:
 func test_create_hover_style_primary() -> void:
 	var style := StyledButton.create_hover_style(StyledButton.ButtonType.PRIMARY)
 
-	assert_color(style.border_color).is_equal(UIThemeConstants.GOLD_BRIGHT)
-	assert_color(style.bg_color).is_equal(UIThemeConstants.BG_HOVER)
+	assert_that(style.border_color).is_equal(UIThemeConstants.GOLD_BRIGHT)
+	assert_that(style.bg_color).is_equal(UIThemeConstants.BG_HOVER)
 
 
 func test_create_hover_style_danger() -> void:
 	var style := StyledButton.create_hover_style(StyledButton.ButtonType.DANGER)
 
-	assert_color(style.border_color).is_equal(UIThemeConstants.RED_HOVER)
-	assert_color(style.bg_color).is_equal(UIThemeConstants.BG_HOVER_RED)
+	assert_that(style.border_color).is_equal(UIThemeConstants.RED_HOVER)
+	assert_that(style.bg_color).is_equal(UIThemeConstants.BG_HOVER_RED)
 
 
 func test_create_pressed_style_darkened() -> void:
@@ -119,14 +119,14 @@ func test_apply_to_button_primary() -> void:
 
 	# 检查字体颜色
 	var font_color := _button.get_theme_color("font_color")
-	assert_color(font_color).is_equal(UIThemeConstants.TEXT_WHITE)
+	assert_that(font_color).is_equal(UIThemeConstants.TEXT_WHITE)
 
 
 func test_apply_to_button_danger_text_color() -> void:
 	StyledButton.apply_to_button(_button, StyledButton.ButtonType.DANGER)
 
 	var hover_color := _button.get_theme_color("font_hover_color")
-	assert_color(hover_color).is_equal(UIThemeConstants.RED_TEXT)
+	assert_that(hover_color).is_equal(UIThemeConstants.RED_TEXT)
 
 
 func test_apply_to_button_sets_font_size() -> void:
@@ -213,7 +213,7 @@ func test_create_normal_style_filled() -> void:
 
 	# FILLED 金色填充背景
 	assert_object(style).is_not_null()
-	assert_color(style.bg_color).is_equal(UIThemeConstants.GOLD)
+	assert_that(style.bg_color).is_equal(UIThemeConstants.GOLD)
 
 
 func test_filled_button_no_border() -> void:
@@ -248,11 +248,11 @@ func test_filled_button_dark_text() -> void:
 
 	# 深色文字
 	var font_color := _button.get_theme_color("font_color")
-	assert_color(font_color).is_equal(UIThemeConstants.TEXT_DARK)
+	assert_that(font_color).is_equal(UIThemeConstants.TEXT_DARK)
 
 
 func test_create_hover_style_filled() -> void:
 	var style := StyledButton.create_hover_style(StyledButton.ButtonType.FILLED)
 
 	# FILLED hover 更亮的金色
-	assert_color(style.bg_color).is_equal(UIThemeConstants.GOLD_BRIGHT)
+	assert_that(style.bg_color).is_equal(UIThemeConstants.GOLD_BRIGHT)

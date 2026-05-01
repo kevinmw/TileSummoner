@@ -37,7 +37,7 @@ func test_create_style_default() -> void:
 
 	assert_object(style).is_not_null()
 	assert_object(style).is_instanceof(StyleBoxFlat)
-	assert_color(style.bg_color).is_equal(UIThemeConstants.GLASS_BG)
+	assert_that(style.bg_color).is_equal(UIThemeConstants.GLASS_BG)
 
 
 func test_create_style_default_has_right_rounded_corners() -> void:
@@ -58,7 +58,7 @@ func test_create_style_default_has_subtle_border() -> void:
 	assert_int(style.border_width_right).is_equal(1)
 	assert_int(style.border_width_bottom).is_equal(1)
 	assert_int(style.border_width_left).is_equal(0)
-	assert_color(style.border_color).is_equal(UIThemeConstants.BORDER_SUBTLE)
+	assert_that(style.border_color).is_equal(UIThemeConstants.BORDER_SUBTLE)
 
 
 func test_create_style_sidebar() -> void:
@@ -66,14 +66,14 @@ func test_create_style_sidebar() -> void:
 
 	assert_object(style).is_not_null()
 	# SIDEBAR 与 DEFAULT 相同结构但可能有不同配置
-	assert_color(style.bg_color).is_equal(UIThemeConstants.GLASS_BG)
+	assert_that(style.bg_color).is_equal(UIThemeConstants.GLASS_BG)
 
 
 func test_create_style_footer() -> void:
 	var style := GlassPanel.create_style(GlassPanel.PanelVariant.FOOTER)
 
 	assert_object(style).is_not_null()
-	assert_color(style.bg_color).is_equal(UIThemeConstants.FOOTER_BG)
+	assert_that(style.bg_color).is_equal(UIThemeConstants.FOOTER_BG)
 
 
 func test_create_style_footer_has_top_border_only() -> void:
@@ -104,7 +104,7 @@ func test_create_accent_bar_style() -> void:
 	var style := GlassPanel.create_accent_bar_style(UIThemeConstants.GOLD)
 
 	assert_object(style).is_not_null()
-	assert_color(style.bg_color).is_equal(UIThemeConstants.GOLD)
+	assert_that(style.bg_color).is_equal(UIThemeConstants.GOLD)
 
 
 func test_create_accent_bar_style_width() -> void:
@@ -135,4 +135,4 @@ func test_apply_to_panel_footer() -> void:
 
 	var panel_style := _panel.get_theme_stylebox("panel")
 	assert_object(panel_style).is_not_null()
-	assert_color(panel_style.bg_color).is_equal(UIThemeConstants.FOOTER_BG)
+	assert_that(panel_style.bg_color).is_equal(UIThemeConstants.FOOTER_BG)

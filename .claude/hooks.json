@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-plugins-official\\hookify\\e30768372b41\\hooks\\run-python-hook.cmd\" pretooluse.py",
+            "command": "python3 \"C:/Users/Kevin/.claude/plugins/marketplaces/claude-plugins-official/plugins/hookify/hooks/pretooluse.py\"",
             "timeout": 10
           }
         ]
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-plugins-official\\hookify\\e30768372b41\\hooks\\run-python-hook.cmd\" posttooluse.py",
+            "command": "python3 \"C:/Users/Kevin/.claude/plugins/marketplaces/claude-plugins-official/plugins/hookify/hooks/posttooluse.py\"",
             "timeout": 10
           }
         ]
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-plugins-official\\hookify\\e30768372b41\\hooks\\run-python-hook.cmd\" stop.py",
+            "command": "python3 \"C:/Users/Kevin/.claude/plugins/marketplaces/claude-plugins-official/plugins/hookify/hooks/stop.py\"",
             "timeout": 10
           }
         ]
@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-plugins-official\\hookify\\e30768372b41\\hooks\\run-python-hook.cmd\" userpromptsubmit.py",
+            "command": "python3 \"C:/Users/Kevin/.claude/plugins/marketplaces/claude-plugins-official/plugins/hookify/hooks/userpromptsubmit.py\"",
             "timeout": 10
           }
         ]

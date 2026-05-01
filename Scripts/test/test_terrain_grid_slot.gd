@@ -138,7 +138,7 @@ func test_drag_preview_size() -> void:
 	await_idle_frame()
 
 	# 获取拖拽数据（包含预览）
-	var drag_data := slot._get_drag_data(Vector2.ZERO)
+	var drag_data: Dictionary = slot._get_drag_data(Vector2.ZERO)
 
 	# 由于 set_drag_preview 是内部调用，我们验证槽位本身的尺寸
 	assert_that(slot.custom_minimum_size.x).is_equal(80)

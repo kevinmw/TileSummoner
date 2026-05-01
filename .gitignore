@@ -18,3 +18,12 @@ mono_crash.*.json
 
 # Windows reserved filename
 nul
+
+# Cloned reference repos
+github/
+
+# MCP local config
+.mcp.json
+
+# Test reports
+reports/
