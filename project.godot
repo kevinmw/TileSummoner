@@ -25,22 +25,26 @@ run/window_initial_size=Vector2(1280, 720)
 [autoload]
 
 McpInteractionServer="*res://mcp_interaction_server.gd"
-
 MessageServer="*res://Scripts/message/message_server.gd"
 tileDatabase="*res://Scripts/tile/tile_database.gd"
 TileConstants="*res://Scripts/tile/tile_constants.gd"
 tileInventory="*res://Scripts/inventory/tile_inventory.gd"
 PhantomCameraManager="*uid://duq6jhf6unyis"
 UnitManager="*res://Scripts/unit/unit_manager.gd"
+UITestRunner="*uid://fmlq2p6advbs"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 
+[editor]
+
+file_system/exclude_directories=PackedStringArray("github", ".claude")
+
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/phantom_camera/plugin.cfg")
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/godot-ui-automation/plugin.cfg")
 
 [gdunit4]
 
